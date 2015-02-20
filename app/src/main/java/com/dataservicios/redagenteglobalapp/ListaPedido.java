@@ -37,7 +37,7 @@ import app.AppController;
 import model.Pedido;
 
 /**
- * Created by usuario on 06/02/2015.
+ * Created by usuario on 06/02/2015 By Data International Derechos Reservados.
  */
 public class ListaPedido extends Activity {
 
