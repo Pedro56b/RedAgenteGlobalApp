@@ -38,6 +38,7 @@ import model.Pedido;
 
 /**
  * Created by usuario on 06/02/2015 By Data International Derechos Reservados 2015.-20-02-2015
+ * Lista de pedidos
  */
 public class ListaPedido extends Activity {
 
