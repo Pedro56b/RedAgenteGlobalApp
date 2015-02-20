@@ -55,6 +55,7 @@ public class ListaPedido extends Activity {
     private JSONObject params;
     private Button btNuevo ;
 
+    private String prueba ; //Nueva variable
 
 
     @Override
