@@ -41,7 +41,7 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
-
+//Subida de Archivos
 public class UploadService extends IntentService{
     long totalSize = 0;
     private NotificationManager notificationManager;
