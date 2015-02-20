@@ -56,6 +56,7 @@ public class ListaPedido extends Activity {
     private Button btNuevo ;
 
     private String prueba ; //Nueva variable
+    private String Mayprueba ; //Nueva variable
 
 
     @Override
