@@ -70,28 +70,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME , null , DATABASE_VERSION);
     }
 
-    private boolean checkDataBase(Context context) {
-        SQLiteDatabase checkDB = null;
-        try {
-            File database=context.getDatabasePath(DATABASE_NAME);
-            if (database.exists()) {
-                Log.i("Database", "Found");
-                String myPath = database.getAbsolutePath();
-                Log.i("Database Path", myPath);
-                checkDB = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
-            } else {
-                // Database does not exist so copy it from assets here
-                Log.i("Database", "Not Found");
-            }
-        } catch(SQLiteException e) {
-            Log.i("Database", "Not Found");
-        } finally {
-            if(checkDB != null) {
-                checkDB.close();
-            }
-        }
-        return checkDB != null ? true : false;
-    }
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         // creating required tables
