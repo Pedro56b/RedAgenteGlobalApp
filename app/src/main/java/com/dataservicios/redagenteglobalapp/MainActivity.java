@@ -92,7 +92,7 @@ public class MainActivity extends Activity {
     }
 
     /**
-     * Carga el activity del login de la clase 56
+     * Carga el activity del login de la clase 562
      * **/
     private void CargarLogin()
     {
