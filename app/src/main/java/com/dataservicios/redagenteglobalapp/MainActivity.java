@@ -416,4 +416,5 @@ public class MainActivity extends Activity {
 
         Log.d("Tag Count", "Tag Count: " + db.getAllPedidos().size());
     }
+
 }
