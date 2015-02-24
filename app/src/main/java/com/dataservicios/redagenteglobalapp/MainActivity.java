@@ -3,8 +3,11 @@ package com.dataservicios.redagenteglobalapp;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,6 +27,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,17 +60,16 @@ public class MainActivity extends Activity {
         cnInternet=new ConexionInternet(MyActivity);
         db = new DatabaseHelper(getApplicationContext());
         if (cnInternet.isOnline()){
-            //db.onUpgrade(getApplicationContext());
-            db.deleteAllPedido();
-            db.deleteAllPublicidad();
-            db.deleteAllPublicidadDetalle();
+            if (checkDataBase(MyActivity)){
+                CargarLogin();
+            }else{
+                db.deleteAllPedido();
+                db.deleteAllPublicidad();
+                db.deleteAllPublicidadDetalle();
 
 
-            new cargaTipoPedido().execute();
-
-//            Intent intent = new Intent("com.dataservicios.redagenteglobalapp.LOGIN");
-//            startActivity(intent);
-//            finish();
+                new cargaTipoPedido().execute();
+            }
 
         }else  {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
@@ -86,6 +89,16 @@ public class MainActivity extends Activity {
             alertDialog.show();
         }
 
+    }
+
+    /**
+     * Carga el activity del login
+     * **/
+    private void CargarLogin()
+    {
+        Intent intent = new Intent("com.dataservicios.redagenteglobalapp.LOGIN");
+        startActivity(intent);
+        finish();
     }
 
 
@@ -211,9 +224,7 @@ public class MainActivity extends Activity {
          * **/
         protected void onPostExecute(String file_url) {
             // dismiss the dialog once product deleted
-            Intent intent = new Intent("com.dataservicios.redagenteglobalapp.LOGIN");
-            startActivity(intent);
-            finish();
+            CargarLogin();
             if (file_url != null){
                 Toast.makeText(MyActivity, file_url, Toast.LENGTH_LONG).show();
             }
@@ -415,6 +426,31 @@ public class MainActivity extends Activity {
         long tag2_id = db.createPedido(pedido2);
 
         Log.d("Tag Count", "Tag Count: " + db.getAllPedidos().size());
+    }
+
+    private boolean checkDataBase(Context context) {
+        SQLiteDatabase checkDB = null;
+        try {
+            File database=context.getDatabasePath(GlobalConstant.DATABASE_NAME);
+            if (database.exists()) {
+                Log.i("Database", "Found");
+                String myPath = database.getAbsolutePath();
+                Log.i("Database Path", myPath);
+                checkDB = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
+                //return true;
+            } else {
+                // Database does not exist so copy it from assets here
+                Log.i("Database", "Not Found");
+                //return false;
+            }
+        } catch(SQLiteException e) {
+            Log.i("Database", "Not Found");
+        } finally {
+            if(checkDB != null) {
+                checkDB.close();
+            }
+        }
+        return checkDB != null ? true : false;
     }
 
 }
