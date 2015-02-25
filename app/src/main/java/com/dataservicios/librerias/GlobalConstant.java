@@ -4,6 +4,7 @@ package com.dataservicios.librerias;
  */
 public final class GlobalConstant {
 
+    public static final String DATABASE_NAME = "agenteGlobalNet";
     private static String dominio = "http://www.redagentesyglobalnet.com";
     //Testeo Local:
     //private static final String LOGIN_URL = "http://192.168.1.45/webservice/login.php";
