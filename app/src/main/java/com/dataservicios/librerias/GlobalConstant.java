@@ -13,4 +13,5 @@ public final class GlobalConstant {
     public static final String URL_IMAGES_AGENT = dominio +  "/images/agentes/";
 
 
+
 }
