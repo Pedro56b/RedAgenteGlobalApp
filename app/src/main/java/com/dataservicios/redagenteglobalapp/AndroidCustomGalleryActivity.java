@@ -183,24 +183,17 @@ public class AndroidCustomGalleryActivity extends Activity {
                         }
                     }
                 }
-
                 //new ServerUpdate().execute(names);
-
 
                 //String foto = names.get(0);
                 //Uri uri = Uri.fromFile(new File(file +"/"+ foto) );
 
                 Intent intent = new Intent(MyActivity, UploadService.class);
-
-
                 //Log.i("FOO", uri.toString());
                 intent.putStringArrayListExtra("names", names);
                 intent.putExtra("id", id_agente);
                 //intent.set(names);
                 startService(intent);
-
-
-
 
                 // getting values from selected ListItem
                 String aid = id_agente;
@@ -214,9 +207,6 @@ public class AndroidCustomGalleryActivity extends Activity {
 
             }
         });
-
-
-
     }
 
 
