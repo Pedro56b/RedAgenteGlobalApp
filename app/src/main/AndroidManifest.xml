@@ -175,6 +175,16 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name="com.dataservicios.redagenteglobalapp.Facturacion"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeAdminPanel">
+            <intent-filter>
+                <action android:name="com.dataservicios.redagenteglobalapp.FACTURACION" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
         <uses-library android:name="com.google.android.maps"/>
         <meta-data
             android:name="com.google.android.gms.version"

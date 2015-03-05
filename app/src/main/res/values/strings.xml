@@ -42,7 +42,9 @@
         <item>Reclamos</item>
         <item>Pedidos</item>
         <item>Transacciones</item>
+        <item>Facturación</item>
         <item>Foto</item>
+        <item>Cerrar Auditoria</item>
     </array>
     <!-- Nav Drawer List Item Icons -->
     <!-- Keep them in order as the titles are in -->
@@ -53,8 +55,9 @@
         <item>@drawable/ic_reclamo</item>
         <item>@drawable/ic_pedido</item>
         <item>@drawable/ic_transaction</item>
+        <item>@drawable/ic_facturacion</item>
         <item>@drawable/ic_foto</item>
-
+        <item>@drawable/ic_action_icon_exit</item>
     </array>
     <string name="descr_image">Image</string>
     <!--<string name="album_name">RedAgenteGlobalApp</string>-->

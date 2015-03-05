@@ -6,15 +6,20 @@ import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.dataservicios.librerias.GlobalConstant;
 import com.dataservicios.librerias.SessionManager;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+
 import adapter.NavDrawerListAdapter;
 import model.NavDrawerItem;
 
@@ -24,7 +29,6 @@ import model.NavDrawerItem;
 public class BaseAgenteActivity extends Activity
 {
 
-
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private android.support.v4.app.ActionBarDrawerToggle mDrawerToggle;
@@ -33,32 +37,22 @@ public class BaseAgenteActivity extends Activity
 
     // used to store app title
     private CharSequence mTitle;
-
     // slide menu items
     private String[] navMenuTitles;
     private TypedArray navMenuIcons;
-
     private ArrayList<NavDrawerItem> navDrawerItems;
     private NavDrawerListAdapter adapter;
     private SessionManager session;
-
-
     protected void onCreateDrawer(){
         session = new SessionManager(getApplicationContext());
         mTitle = mDrawerTitle = getTitle();
-
         // load slide menu items
         navMenuTitles = getResources().getStringArray(R.array.nav_drawer_agentes_items);
-
         // nav drawer icons from resources
-        navMenuIcons = getResources()
-                .obtainTypedArray(R.array.nav_drawer_agente_icons);
-
+        navMenuIcons = getResources().obtainTypedArray(R.array.nav_drawer_agente_icons);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.list_slidermenu);
-
         navDrawerItems = new ArrayList<NavDrawerItem>();
-
         // adding nav drawer items to array
         // Lista de agentes
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1)));
@@ -72,9 +66,12 @@ public class BaseAgenteActivity extends Activity
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1)));
         // Transacciones
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(5, -1)));
-        // Foto
+        // facturacion
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[6], navMenuIcons.getResourceId(6, -1)));
-
+        // Foto
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[7], navMenuIcons.getResourceId(7, -1)));
+        //Cerrar auditoria
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[8], navMenuIcons.getResourceId(8, -1)));
         // Recycle the typed array
         navMenuIcons.recycle();
 
@@ -119,6 +116,7 @@ public class BaseAgenteActivity extends Activity
                                 long id) {
             // display view for selected nav drawer item
             displayView(position);
+
         }
     }
 
@@ -210,7 +208,7 @@ public class BaseAgenteActivity extends Activity
                 startActivity(i_3);
                 break;
             case 5:
-               // Intent i_4 = new Intent( this , TransaccionesAgenteActivity.class);
+                // Intent i_4 = new Intent( this , TransaccionesAgenteActivity.class);
                 Intent i_4 = new Intent( this , Transacciones.class);
                 Bundle bolsa_4 = new Bundle();
                 bolsa_4.putString("id", aid);
@@ -218,15 +216,47 @@ public class BaseAgenteActivity extends Activity
                 startActivity(i_4);
                 break;
             case 6:
-                Intent i_5 = new Intent( this , AndroidCustomGalleryActivity.class);
+                // Intent i_4 = new Intent( this , TransaccionesAgenteActivity.class);
+                Intent i_5 = new Intent( this , Facturacion.class);
                 Bundle bolsa_5 = new Bundle();
                 bolsa_5.putString("id", aid);
                 i_5.putExtras(bolsa_5);
                 startActivity(i_5);
                 break;
+            case 7:
+                Intent i_6 = new Intent( this , AndroidCustomGalleryActivity.class);
+                Bundle bolsa_6 = new Bundle();
+                bolsa_6.putString("id", aid);
+                i_6.putExtras(bolsa_6);
+                startActivity(i_6);
+                break;
+
+            case 8:
+
+
+               // GlobalConstant.inicio = strDate;
+                Calendar c = Calendar.getInstance();
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yy HH:mm:ss");
+                String strDate = sdf.format(c.getTime());
+                GlobalConstant.fin = strDate;
+
+
+                Log.i("INICIO", GlobalConstant.inicio);
+                Log.i("FIN", GlobalConstant.fin);
+
+
+                //insertaTiemporAuditoria();
+                finish();
+                break;
+
+
+
             default:
                 break;
         }
+    }
+
+    private void insertaTiemporAuditoria(String inicio, String fin) {
     }
 
     @Override
