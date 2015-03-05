@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.dataservicios.librerias.GlobalConstant;
+
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,6 +21,7 @@ import model.Pedido;
 import model.Publicidad;
 import model.PublicidadDetalle;
 import model.TipoReclamo;
+import model.Agentes;
 
 /**
  * Created by usuario on 12/02/2015.
@@ -29,18 +32,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Database Version
     private static final int DATABASE_VERSION = 3;
     // Database Name
-    private static final String DATABASE_NAME = "agenteGlobalNet";
+    //private static final String DATABASE_NAME = "agenteGlobalNet";
     // Table Names
     private static final String TABLE_PEDIDO = "pedido";
+    private static final String TABLE_AGENTS = "agentes";
+
     private static final String TABLE_PUBLICIDAD = "publicidad";
     private static final String TABLE_PUBLICIDAD_DETALLE = "publicidad_detalle";
     private static final String TABLE_TIPO_RECLAMO = "tipo_reclamo";
+    private static final String TABLE_USER_AGENTS = "user_agents";
     //Nombre de columnas en comun
     private static final String KEY_ID = "id";
     private static final String KEY_NOMBRE = "nombre";
+
     // TABLE_PUBLICIDAD_DETALLE Table - column names
     private static final String KEY_PEDIDO_ID = "id_pedido";
     private static final String KEY_PUBLICIDAD_ID = "id_publicidad";
+    // TABLE_USER_AGENTS Table - column names
+    private static final String KEY_RAZON = "razon";
+    private static final String KEY_ADDRESS = "direccion";
+    private static final String KEY_CTA = "cuenta";
+    private static final String KEY_THUMB = "thumb";
+    private static final String KEY_IDUSER = "idUser";
     // Table Create Statements
     // Pedido table create statement
     private static final String CREATE_TABLE_PEDIDO = "CREATE TABLE "
@@ -64,10 +77,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + TABLE_TIPO_RECLAMO + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
             + KEY_NOMBRE + " TEXT " + ")";
 
+    // todo_tag table create statement
+    private static final String CREATE_TABLE_AGENT= "CREATE TABLE " + TABLE_AGENTS
+            + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
+            + KEY_NOMBRE + " TEXT, "
+            + KEY_RAZON + " TEXT,"
+            + KEY_ADDRESS + " TEXT,"
+            + KEY_CTA + " TEXT,"
+            + KEY_THUMB + " TEXT,"
+            + KEY_IDUSER + " INTEGER " + ")";
+
 
 
     public DatabaseHelper(Context context) {
-        super(context, DATABASE_NAME , null , DATABASE_VERSION);
+        super(context, GlobalConstant.DATABASE_NAME, null , DATABASE_VERSION);
     }
 
 
@@ -78,6 +101,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_PUBLICIDAD);
         db.execSQL(CREATE_TABLE_PUBLICIDAD_DETALLE);
         db.execSQL(CREATE_TABLE_TIPO_RECLAMO);
+        db.execSQL(CREATE_TABLE_AGENT);
     }
 
 
@@ -89,6 +113,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PUBLICIDAD);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PUBLICIDAD_DETALLE);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_TIPO_RECLAMO);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_AGENTS);
         // create new tables
         onCreate(db);
     }
@@ -114,6 +139,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         long todo_id = pedido.getId();
         return todo_id;
     }
+
+
 
     /*
      * get single Pedido
@@ -285,6 +312,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             } while (c.moveToNext());
         }
         return publicidad;
+    }
+
+    public int getCountTable(String $table)
+    {
+        String countQuery = "SELECT  * FROM " + $table;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(countQuery, null);
+        int count = cursor.getCount();
+        cursor.close();
+        // return count
+        return count;
     }
 
     /*
@@ -523,8 +561,79 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.delete(TABLE_TIPO_RECLAMO, null, null );
     }
 
+// ------------------------ "Agentes" table methods ----------------//
 
+    /*
+     * get single publicidad
+     */
+    public Agentes getAgente(long id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectQuery = "SELECT  * FROM " + TABLE_AGENTS + " WHERE "
+                + KEY_ID + " = " + id;
+        Log.e(LOG, selectQuery);
+        Cursor c = db.rawQuery(selectQuery, null);
+        if (c != null)
+            c.moveToFirst();
+        Agentes pd = new Agentes();
+        pd.setId(c.getInt((c.getColumnIndex(KEY_ID))));
+        pd.setNombreAgente((c.getString(c.getColumnIndex(KEY_NOMBRE))));
+        pd.setRazonSocial((c.getString(c.getColumnIndex(KEY_RAZON))));
+        pd.setCta_cte((c.getString(c.getColumnIndex(KEY_CTA))));
+        pd.setThumbnailUrl((c.getString(c.getColumnIndex(KEY_THUMB))));
+        pd.setDireccion((c.getString(c.getColumnIndex(KEY_ADDRESS))));
+        return pd;
+    }
 
+    /**
+     * getting all Agents por iduser
+     * */
+    public List<Agentes> getAllAgents(long idUser) {
+        List<Agentes> agentes = new ArrayList<Agentes>();
+        String selectQuery = "SELECT  * FROM " + TABLE_AGENTS + " WHERE "
+                + KEY_IDUSER + " = " + idUser;
+
+        Log.e(LOG, selectQuery);
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (c.moveToFirst()) {
+            do {
+                Agentes pd = new Agentes();
+                pd.setId(c.getInt((c.getColumnIndex(KEY_ID))));
+                pd.setNombreAgente((c.getString(c.getColumnIndex(KEY_NOMBRE))));
+                pd.setRazonSocial((c.getString(c.getColumnIndex(KEY_RAZON))));
+                pd.setCta_cte((c.getString(c.getColumnIndex(KEY_CTA))));
+                pd.setThumbnailUrl((c.getString(c.getColumnIndex(KEY_THUMB))));
+                pd.setDireccion((c.getString(c.getColumnIndex(KEY_ADDRESS))));
+
+                // adding to todo list
+                agentes.add(pd);
+            } while (c.moveToNext());
+        }
+        return agentes;
+    }
+
+    /*
+     * Ingresar datos de agentes a tabla sqlLite
+     */
+    public long ingresarAgentes(Agentes agents) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(KEY_ID, agents.getId());
+        values.put(KEY_NOMBRE, agents.getNombreAgente());
+        values.put(KEY_RAZON, agents.getRazonSocial());
+        values.put(KEY_CTA, agents.getCta_cte());
+        values.put(KEY_THUMB, agents.getThumbnailUrl());
+        values.put(KEY_ADDRESS, agents.getDireccion());
+        values.put(KEY_IDUSER, agents.getIdUser());
+        // insert row
+        //long todo_id = db.insert(TABLE_PEDIDO, null, values);
+        db.insert(TABLE_AGENTS, null, values);
+        long todo_id = agents.getId();
+        return todo_id;
+    }
 
 
 
@@ -542,5 +651,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         Date date = new Date();
         return dateFormat.format(date);
+    }
+
+    public static boolean checkDataBase(Context context) {
+        SQLiteDatabase checkDB = null;
+        try {
+            File database=context.getDatabasePath(GlobalConstant.DATABASE_NAME);
+            if (database.exists()) {
+                Log.i("Database", "Found");
+                String myPath = database.getAbsolutePath();
+                Log.i("Database Path", myPath);
+                checkDB = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
+                //return true;
+            } else {
+                // Database does not exist so copy it from assets here
+                Log.i("Database", "Not Found");
+                //return false;
+            }
+        } catch(SQLiteException e) {
+            Log.i("Database", "Not Found");
+        } finally {
+            if(checkDB != null) {
+                checkDB.close();
+            }
+        }
+        return checkDB != null ? true : false;
     }
 }

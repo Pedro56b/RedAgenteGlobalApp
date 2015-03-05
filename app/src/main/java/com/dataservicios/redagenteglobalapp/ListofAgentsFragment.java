@@ -4,6 +4,8 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,6 +24,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.dataservicios.SQLite.DatabaseHelper;
 import com.dataservicios.librerias.GlobalConstant;
 import com.dataservicios.librerias.JSONParser;
 import com.dataservicios.librerias.SessionManager;
@@ -34,6 +37,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import adapter.AgentesAdapter;
@@ -52,6 +56,7 @@ public class ListofAgentsFragment extends Fragment {
 
 
     private List<Agentes> agentesList = new ArrayList<Agentes>();
+    private List<Agentes> listadoAgentes = new ArrayList<Agentes>();
     private ListView listView;
     private AgentesAdapter adapter;
 
@@ -68,6 +73,7 @@ public class ListofAgentsFragment extends Fragment {
     private Bundle args;
     private JSONObject params;
 
+    private DatabaseHelper db;
     // products JSONArray
     JSONArray agentes = null;
 
@@ -94,6 +100,8 @@ public class ListofAgentsFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        db = new DatabaseHelper(getActivity());
+        int countReg;
 
         // Hashmap for ListView
         // agentesList = new ArrayList<HashMap<String, String>>();
@@ -133,10 +141,25 @@ public class ListofAgentsFragment extends Fragment {
         // launching Edit Product Screen
 
         adapter = new AgentesAdapter(getActivity(), agentesList);
+
         pDialog = new ProgressDialog(getActivity());
         pDialog.setMessage("Please wait...");
         pDialog.setCancelable(false);
-        cargaAgentes();
+        //listView.setAdapter(adapter);
+        countReg = db.getCountTable(GlobalConstant.TABLE_AGENTS);
+
+        if (countReg==0){
+            cargaAgentes();
+        }else{
+            adapter = new AgentesAdapter(getActivity(), db.getAllAgents(Integer.valueOf(id_user)));
+
+            adapter.notifyDataSetChanged();
+
+        }
+
+       // listView.setAdapter(adapter);
+
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
@@ -232,7 +255,6 @@ public class ListofAgentsFragment extends Fragment {
                         agentes.setDireccion(obj.getString("direccion"));
                         agentes.setNombreAgente(obj.getString("nombre_comercial"));
                         // agentes.setStatus(obj.getInt("status"));
-
                         // adding HashList to ArrayList
                         agentesList.add(agentes);
                     }
@@ -314,17 +336,17 @@ public class ListofAgentsFragment extends Fragment {
                                 // looping through All Products
                                 for (int i = 0; i < agentesObjJson.length(); i++) {
                                     JSONObject obj = agentesObjJson.getJSONObject(i);
-                                    // Storing each json item in variable
-                                    String id = obj.getString(TAG_ID);
-                                    String name = obj.getString(TAG_TIENDA);
-                                    String direccion = obj.getString(TAG_DIRECCION);
+                                    // Storing each json item in variable id_user
                                     Agentes agentes = new Agentes();
-                                    agentes.setId(Integer.valueOf(obj.getString("id")));
+                                    agentes.setId(Integer.valueOf(obj.getString(TAG_ID)));
                                     agentes.setThumbnailUrl( GlobalConstant.URL_IMAGES_AGENT + obj.getString("photo"));
-                                    agentes.setDireccion(obj.getString("direccion"));
-                                    agentes.setNombreAgente(obj.getString("nombre_comercial"));
+                                    agentes.setDireccion(obj.getString(TAG_DIRECCION));
+                                    agentes.setNombreAgente(obj.getString(TAG_TIENDA));
+                                    agentes.setRazonSocial(obj.getString("nombre_comercial"));
+                                    agentes.setIdUser(Integer.valueOf(id_user));
                                     // agentes.setStatus(obj.getInt("status"));
                                     // adding HashList to ArrayList
+                                    db.ingresarAgentes(agentes);
                                     agentesList.add(agentes);
                                 }
                                 adapter.notifyDataSetChanged();

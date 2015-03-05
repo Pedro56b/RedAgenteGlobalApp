@@ -2,12 +2,8 @@ package com.dataservicios.redagenteglobalapp;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,7 +14,6 @@ import android.widget.Toast;
 
 import com.dataservicios.SQLite.DatabaseHelper;
 import com.dataservicios.librerias.ConexionInternet;
-import com.dataservicios.librerias.GlobalConstant;
 import com.dataservicios.librerias.JSONParser;
 
 import org.apache.http.NameValuePair;
@@ -27,12 +22,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import model.Pedido;
-import model.Producto;
 import model.Publicidad;
 import model.PublicidadDetalle;
 import model.TipoReclamo;
@@ -60,14 +53,12 @@ public class MainActivity extends Activity {
         cnInternet=new ConexionInternet(MyActivity);
         db = new DatabaseHelper(getApplicationContext());
         if (cnInternet.isOnline()){
-            if (checkDataBase(MyActivity)){
+            if (db.checkDataBase(MyActivity)){
                 CargarLogin();
             }else{
                 db.deleteAllPedido();
                 db.deleteAllPublicidad();
                 db.deleteAllPublicidadDetalle();
-
-
                 new cargaTipoPedido().execute();
             }
 
@@ -428,29 +419,6 @@ public class MainActivity extends Activity {
         Log.d("Tag Count", "Tag Count: " + db.getAllPedidos().size());
     }
 
-    private boolean checkDataBase(Context context) {
-        SQLiteDatabase checkDB = null;
-        try {
-            File database=context.getDatabasePath(GlobalConstant.DATABASE_NAME);
-            if (database.exists()) {
-                Log.i("Database", "Found");
-                String myPath = database.getAbsolutePath();
-                Log.i("Database Path", myPath);
-                checkDB = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
-                //return true;
-            } else {
-                // Database does not exist so copy it from assets here
-                Log.i("Database", "Not Found");
-                //return false;
-            }
-        } catch(SQLiteException e) {
-            Log.i("Database", "Not Found");
-        } finally {
-            if(checkDB != null) {
-                checkDB.close();
-            }
-        }
-        return checkDB != null ? true : false;
-    }
+
 
 }
