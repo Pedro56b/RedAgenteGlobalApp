@@ -1,4 +1,12 @@
 package com.dataservicios.librerias;
+
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
+import android.util.Log;
+
+import java.io.File;
+
 /**
  * Created by usuario on 11/11/2014.
  */
@@ -14,5 +22,7 @@ public final class GlobalConstant {
     public static final String URL_IMAGES_AGENT = dominio +  "/images/agentes/";
 
     //Probando
+    public static final String TABLE_AGENTS = "agentes";
+
 
 }
