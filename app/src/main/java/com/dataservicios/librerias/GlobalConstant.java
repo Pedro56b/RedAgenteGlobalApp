@@ -21,8 +21,11 @@ public final class GlobalConstant {
     public static final String AGENT_LIST = dominio +  "/JsonAgentList";
     public static final String URL_IMAGES_AGENT = dominio +  "/images/agentes/";
 
+
     //Probando
     public static final String TABLE_AGENTS = "agentes";
+
+    public static String inicio,fin;
 
 
 }

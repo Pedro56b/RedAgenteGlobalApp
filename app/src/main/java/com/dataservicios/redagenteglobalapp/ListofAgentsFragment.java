@@ -35,7 +35,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -105,6 +107,12 @@ public class ListofAgentsFragment extends Fragment {
 
         // Hashmap for ListView
         // agentesList = new ArrayList<HashMap<String, String>>();
+
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yy HH:mm:ss");
+        String strDate = sdf.format(c.getTime());
+        GlobalConstant.inicio = strDate;
+        Log.i("FECHA",strDate);
 
 
         Bundle bundle = getArguments();
