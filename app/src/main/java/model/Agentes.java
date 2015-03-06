@@ -12,14 +12,17 @@ public class Agentes {
     private int  Id;
     private String cta_cte;
     private int idUser;
+    private String inicio;
+    private String fin;
+    private Integer status;
 
 
-    //private ArrayList<String> genre;
+//private ArrayList<String> genre;
 
     public Agentes() {
     }
 
-    public Agentes(String thumbnailUrl,String NombreAgente,  String Direccion, int Id, String RazonSocial, String cta_cte, int idUser) {
+    public Agentes(String thumbnailUrl,String NombreAgente,  String Direccion, int Id, String RazonSocial, String cta_cte, int idUser, int status, String inicio, String fin) {
         this.thumbnailUrl = thumbnailUrl;
         this.Direccion = Direccion;
         this.NombreAgente = NombreAgente;
@@ -27,6 +30,9 @@ public class Agentes {
         this.RazonSocial = RazonSocial;
         this.cta_cte = cta_cte;
         this.idUser = idUser;
+        this.status = status;
+        this.inicio = inicio;
+        this.fin = fin;
 
     }
     public int getId() {
@@ -82,6 +88,30 @@ public class Agentes {
 
     public void setIdUser(int idUser) {
         this.idUser = idUser;
+    }
+
+    public String getInicio() {
+        return inicio;
+    }
+
+    public void setInicio(String inicio) {
+        this.inicio = inicio;
+    }
+
+    public String getFin() {
+        return fin;
+    }
+
+    public void setFin(String fin) {
+        this.fin = fin;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 
 

@@ -49,7 +49,7 @@ public class Facturacion extends Activity {
         });
 
         // webView.loadUrl("http://developer.android.com");
-        webView.loadUrl("http://redagentesyglobalnet.com/admin/facturacion/"+id_agente);
+        webView.loadUrl("http://redagentesyglobalnet.com/admin/invoicesForAgent/"+id_agente);
 
         webView.setWebChromeClient(new WebChromeClient() {
 

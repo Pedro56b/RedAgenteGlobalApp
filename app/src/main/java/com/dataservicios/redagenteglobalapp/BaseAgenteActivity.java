@@ -1,6 +1,7 @@
 package com.dataservicios.redagenteglobalapp;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
@@ -12,15 +13,25 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.dataservicios.librerias.GlobalConstant;
 import com.dataservicios.librerias.SessionManager;
+import com.dataservicios.SQLite.DatabaseHelper;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
 import adapter.NavDrawerListAdapter;
+import app.AppController;
 import model.NavDrawerItem;
 
 /**
@@ -28,12 +39,13 @@ import model.NavDrawerItem;
  */
 public class BaseAgenteActivity extends Activity
 {
-
+    private Activity MyActivity;
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private android.support.v4.app.ActionBarDrawerToggle mDrawerToggle;
     // nav drawer title
     private CharSequence mDrawerTitle;
+    private ProgressDialog pDialog;
 
     // used to store app title
     private CharSequence mTitle;
@@ -43,7 +55,9 @@ public class BaseAgenteActivity extends Activity
     private ArrayList<NavDrawerItem> navDrawerItems;
     private NavDrawerListAdapter adapter;
     private SessionManager session;
+    private DatabaseHelper db;
     protected void onCreateDrawer(){
+        MyActivity = (Activity) this;
         session = new SessionManager(getApplicationContext());
         mTitle = mDrawerTitle = getTitle();
         // load slide menu items
@@ -242,7 +256,7 @@ public class BaseAgenteActivity extends Activity
                 Log.i("FIN", GlobalConstant.fin);
 
 
-                //insertaTiemporAuditoria();
+                insertaTiemporAuditoria(id_agente, GlobalConstant.inicio, GlobalConstant.fin);
                 finish();
                 break;
 
@@ -253,7 +267,102 @@ public class BaseAgenteActivity extends Activity
         }
     }
 
-    private void insertaTiemporAuditoria(String inicio, String fin) {
+    private void insertaTiemporAuditoria(String idAgent, String inicio, String fin) {
+        db = new DatabaseHelper(MyActivity);
+        db.updateStatusAndFech(inicio,fin,idAgent);
+
+
+        /*showpDialog();
+        //String valor;
+        int id = rgTipo.getCheckedRadioButtonId();
+        if (id == -1){
+            //no item selected
+            valor ="";
+        }
+        else{
+            if (id == rbNuevo.getId()){
+                //Do something with the button
+                valor = "new";
+            } else if(id == rbRenovacion.getId()){
+                valor = "renewal";
+            }
+        }
+        comentario = etComent.getText().toString();
+        JSONObject params_pedido = new JSONObject();
+        try {
+            params_pedido.put("id", id_user);
+            params_pedido.put("agent_id", idAgente);
+            params_pedido.put("type_orders_id", idTipo);
+            params_pedido.put("publicities_id", idProducto);
+            params_pedido.put("publicities_details_id", idPE);
+            params_pedido.put("state", valor);
+            params_pedido.put("comentario",comentario);
+
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST , "http://redagentesyglobalnet.com/updateJsonOrder" ,params_pedido,
+                new Response.Listener<JSONObject>()
+                {
+                    @Override
+                    public void onResponse(JSONObject response)
+                    {
+                        Log.d("DATAAAA", response.toString());
+                        //adapter.notifyDataSetChanged();
+                        try {
+                            //String agente = response.getString("agentes");
+                            int success =  response.getInt("success");
+                            if (success == 1) {
+//
+                                Log.d("DATAAAA", response.toString());
+                                Toast.makeText(MyActivity, "Se  envió correctamente su pedido", Toast.LENGTH_LONG).show();
+                                String aid = String.valueOf(idAgente) ;
+                                Intent intent = new Intent(MyActivity, ListaPedido.class);
+                                Bundle bolsa = new Bundle();
+                                bolsa.putString("id", aid);
+                                intent.putExtras(bolsa);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+                                finish();
+
+                            } else {
+
+                                Toast.makeText(MyActivity, "No se ha podido enviar la información, intentelo mas tarde ",Toast.LENGTH_LONG).show();
+                            }
+                        } catch (JSONException e) {
+                            Toast.makeText(MyActivity, "No se ha podido enviar la información, intentelo mas tarde ",Toast.LENGTH_LONG).show();
+                            e.printStackTrace();
+                        }
+
+                        hidepDialog();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        //VolleyLog.d(TAG, "Error: " + error.getMessage());
+                        hidepDialog();
+                    }
+                }
+        );
+
+        AppController.getInstance().addToRequestQueue(jsObjRequest);*/
+
+
+
+    }
+
+    private void showpDialog() {
+        if (!pDialog.isShowing())
+            pDialog.show();
+    }
+
+    private void hidepDialog() {
+        if (pDialog.isShowing())
+            pDialog.dismiss();
     }
 
     @Override
