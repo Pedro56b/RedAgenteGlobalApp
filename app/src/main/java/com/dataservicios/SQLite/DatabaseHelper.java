@@ -30,7 +30,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Logcat tag
     private static final String LOG = "DatabaseHelper";
     // Database Version
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
     // Database Name
     //private static final String DATABASE_NAME = "agenteGlobalNet";
     // Table Names
@@ -88,7 +88,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + KEY_ADDRESS + " TEXT,"
             + KEY_CTA + " TEXT,"
             + KEY_THUMB + " TEXT,"
-            + KEY_IDUSER + " INTEGER " + ")";
+            + KEY_IDUSER + " INTEGER, "
+            + KEY_STATUS + " INTEGER, "
+            + KEY_INICIO + " TEXT, "
+            + KEY_FIN + " TEXT " + ")";
 
 
 
@@ -610,7 +613,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 pd.setCta_cte((c.getString(c.getColumnIndex(KEY_CTA))));
                 pd.setThumbnailUrl((c.getString(c.getColumnIndex(KEY_THUMB))));
                 pd.setDireccion((c.getString(c.getColumnIndex(KEY_ADDRESS))));
-
+                Log.d("StatusAgent", c.getString(c.getColumnIndex(KEY_STATUS)));
+                Log.d("InicioAgent", c.getString(c.getColumnIndex(KEY_INICIO)));
+                Log.d("FinAgent", c.getString(c.getColumnIndex(KEY_FIN)));
                 // adding to todo list
                 agentes.add(pd);
             } while (c.moveToNext());
@@ -639,6 +644,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.insert(TABLE_AGENTS, null, values);
         long todo_id = agents.getId();
         return todo_id;
+    }
+
+    /*
+     * Updating a Pedido
+     */
+    public int updateStatusAndFech(String inicio, String fin, String idAgent) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_STATUS, 1);
+        values.put(KEY_INICIO, inicio);
+        values.put(KEY_FIN, fin);
+        // updating row
+        return db.update(TABLE_AGENTS, values, KEY_ID + " = ?",
+                new String[] { String.valueOf(idAgent) });
     }
 
 
