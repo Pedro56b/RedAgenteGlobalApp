@@ -230,10 +230,7 @@ public class BaseAgenteActivity extends Activity
                 i_6.putExtras(bolsa_6);
                 startActivity(i_6);
                 break;
-
             case 8:
-
-
                // GlobalConstant.inicio = strDate;
                 Calendar c = Calendar.getInstance();
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yy HH:mm:ss");
