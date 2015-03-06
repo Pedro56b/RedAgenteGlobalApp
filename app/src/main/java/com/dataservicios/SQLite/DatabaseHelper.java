@@ -54,6 +54,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_CTA = "cuenta";
     private static final String KEY_THUMB = "thumb";
     private static final String KEY_IDUSER = "idUser";
+    private static final String KEY_STATUS = "status";
+    private static final String KEY_INICIO = "inicio";
+    private static final String KEY_FIN = "fin";
     // Table Create Statements
     // Pedido table create statement
     private static final String CREATE_TABLE_PEDIDO = "CREATE TABLE "
@@ -628,6 +631,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(KEY_THUMB, agents.getThumbnailUrl());
         values.put(KEY_ADDRESS, agents.getDireccion());
         values.put(KEY_IDUSER, agents.getIdUser());
+        values.put(KEY_STATUS, agents.getStatus());
+        values.put(KEY_INICIO, agents.getInicio());
+        values.put(KEY_FIN, agents.getFin());
         // insert row
         //long todo_id = db.insert(TABLE_PEDIDO, null, values);
         db.insert(TABLE_AGENTS, null, values);

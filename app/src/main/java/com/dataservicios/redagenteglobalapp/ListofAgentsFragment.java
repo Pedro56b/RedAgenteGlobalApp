@@ -69,6 +69,9 @@ public class ListofAgentsFragment extends Fragment {
     private static final String TAG_ID = "id";
     private static final String TAG_TIENDA = "nombre_comercial";
     private static final String TAG_DIRECCION = "direccion";
+    private static final String TAG_STATUS = "status";
+    private static final String TAG_INICIO = "inicio";
+    private static final String TAG_FIN = "fin";
     private static String url_all_agentes = "http://redagentesyglobalnet.com/JsonAgentList";
     private SessionManager session;
     private String code_user, id_user, name_user;
@@ -352,6 +355,9 @@ public class ListofAgentsFragment extends Fragment {
                                     agentes.setNombreAgente(obj.getString(TAG_TIENDA));
                                     agentes.setRazonSocial(obj.getString("nombre_comercial"));
                                     agentes.setIdUser(Integer.valueOf(id_user));
+                                    agentes.setStatus(obj.getInt(TAG_STATUS));
+                                    agentes.setInicio(obj.getString(TAG_INICIO));
+                                    agentes.setFin(obj.getString(TAG_FIN));
                                     // agentes.setStatus(obj.getInt("status"));
                                     // adding HashList to ArrayList
                                     db.ingresarAgentes(agentes);
