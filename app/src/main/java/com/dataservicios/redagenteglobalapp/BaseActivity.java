@@ -237,5 +237,19 @@ public class BaseActivity extends Activity {
         // Pass any configuration change to the drawer toggls
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
+    @Override
+    public void onResume() {
+        super.onResume();
 
+
+    }
+
+    @Override
+    public void onRestart() {
+        super.onRestart();
+        //When BACK BUTTON is pressed, the activity on the stack is restarted
+        //Do what you want on the refresh procedure here
+        finish();
+        startActivity(getIntent());
+    }
 }

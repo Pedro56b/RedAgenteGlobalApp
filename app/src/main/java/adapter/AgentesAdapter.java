@@ -2,11 +2,13 @@ package adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
@@ -26,11 +28,22 @@ public class AgentesAdapter extends BaseAdapter {
     private Activity activity;
     private LayoutInflater inflater;
     private List<Agentes> agenteItems;
+
     ImageLoader imageLoader = AppController.getInstance().getImageLoader();
 
     public AgentesAdapter(Activity activity, List<Agentes> rutaItems) {
         this.activity = activity;
         this.agenteItems = rutaItems;
+    }
+
+    @Override
+    public boolean isEnabled(int position) {
+        // Deshabilitando los items del adptador segun el statu
+        if( agenteItems.get(position).getStatus()==1){
+            return false;
+
+        }
+        return true;
     }
 
     @Override
@@ -50,9 +63,10 @@ public class AgentesAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
+       // RelativeLayout v = (RelativeLayout)LayoutInflater.from(parent.getContext()).inflate(R.layout.list_detail, null);
         if (inflater == null)
             inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
         if (convertView == null)
             convertView = inflater.inflate(R.layout.list_detail, null);
 
@@ -80,10 +94,12 @@ public class AgentesAdapter extends BaseAdapter {
 
         if(m.getStatus()==0){
             imgStatus.setImageResource(R.drawable.ic_check_off);
+            //convertView.setBackgroundColor(Color.BLUE);
         } else if(m.getStatus()==1){
             imgStatus.setImageResource(R.drawable.ic_check_on);
+            //convertView.setBackgroundColor(Color.CYAN);
         }
-
+        //convertView.setEnabled(true);
         return convertView;
     }
 

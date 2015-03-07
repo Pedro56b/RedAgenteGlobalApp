@@ -186,6 +186,19 @@ public class ListofAgentsFragment extends Fragment {
                 startActivity(i);
             }
         });
+//
+//        listView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                parent.setEnabled(false);
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//
+//            }
+//        });
+
 
         listView.setAdapter(adapter);
         search_edt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
