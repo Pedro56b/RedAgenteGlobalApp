@@ -304,13 +304,7 @@ public class BaseAgenteActivity extends Activity
 //
                                 Log.d("DATAAAA", response.toString());
                                 Toast.makeText(MyActivity, "Se actualizo su visita", Toast.LENGTH_LONG).show();
-                                /*String aid = String.valueOf(idAgente) ;
-                                Intent intent = new Intent(MyActivity, ListaPedido.class);
-                                Bundle bolsa = new Bundle();
-                                bolsa.putString("id", aid);
-                                intent.putExtras(bolsa);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(intent);*/
+
                                 finish();
 
                             } else {

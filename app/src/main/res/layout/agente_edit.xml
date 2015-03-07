@@ -66,7 +66,7 @@
                     android:id="@+id/widget45"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Representante:"
+                    android:text="Ruc:"
                     android:paddingRight="0dp"  />
                 <EditText
                     style="@style/TextLogin"

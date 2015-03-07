@@ -650,7 +650,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     /*
-     * Updating a Pedido
+     * Updating a Status And Fech
+     */
+    public int updateAgent(String idAgent, String Tienda, String Direccion) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_NOMBRE, Tienda);
+        values.put(KEY_ADDRESS, Direccion);
+        // updating row
+        return db.update(TABLE_AGENTS, values, KEY_ID + " = ?",
+                new String[] { String.valueOf(idAgent) });
+    }
+
+    /*
+     * Updating a Status And Fech
      */
     public int updateStatusAndFech(String inicio, String fin, String idAgent) {
         SQLiteDatabase db = this.getWritableDatabase();
