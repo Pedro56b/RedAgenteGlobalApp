@@ -613,6 +613,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 pd.setCta_cte((c.getString(c.getColumnIndex(KEY_CTA))));
                 pd.setThumbnailUrl((c.getString(c.getColumnIndex(KEY_THUMB))));
                 pd.setDireccion((c.getString(c.getColumnIndex(KEY_ADDRESS))));
+                pd.setStatus(c.getInt(c.getColumnIndex(KEY_STATUS)));
+                pd.setInicio(c.getString(c.getColumnIndex(KEY_INICIO)));
+                pd.setFin(c.getString(c.getColumnIndex(KEY_FIN)));
                 Log.d("StatusAgent", c.getString(c.getColumnIndex(KEY_STATUS)));
                 Log.d("InicioAgent", c.getString(c.getColumnIndex(KEY_INICIO)));
                 Log.d("FinAgent", c.getString(c.getColumnIndex(KEY_FIN)));

@@ -112,7 +112,7 @@ public class ListofAgentsFragment extends Fragment {
         // agentesList = new ArrayList<HashMap<String, String>>();
 
         Calendar c = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yy HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String strDate = sdf.format(c.getTime());
         GlobalConstant.inicio = strDate;
         Log.i("FECHA",strDate);
