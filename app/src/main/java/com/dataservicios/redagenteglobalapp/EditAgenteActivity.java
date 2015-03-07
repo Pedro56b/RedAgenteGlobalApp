@@ -16,6 +16,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.dataservicios.SQLite.DatabaseHelper;
 import com.dataservicios.librerias.JSONParser;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -50,8 +51,9 @@ public class EditAgenteActivity extends Activity {
     private static final String TAG_ID = "id";
     private static final String TAG_TIENDA = "tienda";
     private static final String TAG_DIRECCION = "direccion";
-    private static final String TAG_REPRESENTANTE = "representante";
+    private static final String TAG_REPRESENTANTE = "ruc";
     private static final String TAG_TELEFONO = "telefono";
+    private Activity MyActivity;
 
     Button btn_save_agente;
     EditText edt_tienda;
@@ -61,6 +63,7 @@ public class EditAgenteActivity extends Activity {
 
     private AlertDialog.Builder builder;
     private JSONObject params;
+    private DatabaseHelper db;
 
 
 
@@ -71,6 +74,8 @@ public class EditAgenteActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.agente_edit);
+        MyActivity= this;
+        db = new DatabaseHelper(MyActivity);
         //super.onCreateDrawer();
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -97,6 +102,8 @@ public class EditAgenteActivity extends Activity {
 
                                 Bundle bundle = getIntent().getExtras();
                                 String id_agente = bundle.getString(TAG_ID);
+                                db.updateAgent(id_agente,edt_tienda.getText().toString(),edt_direccion.getText().toString());
+
 
                                 pDialog = new ProgressDialog(EditAgenteActivity.this);
                                 pDialog.setMessage("Please wait...");

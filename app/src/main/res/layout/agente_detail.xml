@@ -78,7 +78,7 @@
                             android:id="@+id/representante"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Representante:     " />
+                            android:text="Ruc:     " />
                         <TextView
                             android:id="@+id/representante_detail"
                             android:layout_width="wrap_content"
