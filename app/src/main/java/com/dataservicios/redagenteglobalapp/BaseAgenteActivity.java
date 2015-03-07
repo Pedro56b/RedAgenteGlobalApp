@@ -12,7 +12,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -56,6 +60,10 @@ public class BaseAgenteActivity extends Activity
     private NavDrawerListAdapter adapter;
     private SessionManager session;
     private DatabaseHelper db;
+
+
+
+
     protected void onCreateDrawer(){
         MyActivity = (Activity) this;
         session = new SessionManager(getApplicationContext());
@@ -247,7 +255,7 @@ public class BaseAgenteActivity extends Activity
             case 8:
                // GlobalConstant.inicio = strDate;
                 Calendar c = Calendar.getInstance();
-                SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yy HH:mm:ss");
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 String strDate = sdf.format(c.getTime());
                 GlobalConstant.fin = strDate;
 
@@ -272,39 +280,16 @@ public class BaseAgenteActivity extends Activity
         db.updateStatusAndFech(inicio,fin,idAgent);
 
 
-        /*showpDialog();
-        //String valor;
-        int id = rgTipo.getCheckedRadioButtonId();
-        if (id == -1){
-            //no item selected
-            valor ="";
-        }
-        else{
-            if (id == rbNuevo.getId()){
-                //Do something with the button
-                valor = "new";
-            } else if(id == rbRenovacion.getId()){
-                valor = "renewal";
-            }
-        }
-        comentario = etComent.getText().toString();
         JSONObject params_pedido = new JSONObject();
         try {
-            params_pedido.put("id", id_user);
-            params_pedido.put("agent_id", idAgente);
-            params_pedido.put("type_orders_id", idTipo);
-            params_pedido.put("publicities_id", idProducto);
-            params_pedido.put("publicities_details_id", idPE);
-            params_pedido.put("state", valor);
-            params_pedido.put("comentario",comentario);
-
-
-
+            params_pedido.put("agent_id", idAgent);
+            params_pedido.put("inicio", inicio);
+            params_pedido.put("fin", fin);
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST , "http://redagentesyglobalnet.com/updateJsonOrder" ,params_pedido,
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST , "http://redagentesyglobalnet.com/updateStatusAgent" ,params_pedido,
                 new Response.Listener<JSONObject>()
                 {
                     @Override
@@ -318,14 +303,14 @@ public class BaseAgenteActivity extends Activity
                             if (success == 1) {
 //
                                 Log.d("DATAAAA", response.toString());
-                                Toast.makeText(MyActivity, "Se  envió correctamente su pedido", Toast.LENGTH_LONG).show();
-                                String aid = String.valueOf(idAgente) ;
+                                Toast.makeText(MyActivity, "Se actualizo su visita", Toast.LENGTH_LONG).show();
+                                /*String aid = String.valueOf(idAgente) ;
                                 Intent intent = new Intent(MyActivity, ListaPedido.class);
                                 Bundle bolsa = new Bundle();
                                 bolsa.putString("id", aid);
                                 intent.putExtras(bolsa);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(intent);
+                                startActivity(intent);*/
                                 finish();
 
                             } else {
@@ -337,7 +322,7 @@ public class BaseAgenteActivity extends Activity
                             e.printStackTrace();
                         }
 
-                        hidepDialog();
+
                     }
                 },
                 new Response.ErrorListener() {
@@ -348,7 +333,10 @@ public class BaseAgenteActivity extends Activity
                     }
                 }
         );
-        AppController.getInstance().addToRequestQueue(jsObjRequest);*/
+
+
+        AppController.getInstance().addToRequestQueue(jsObjRequest);
+
 
     }
 
