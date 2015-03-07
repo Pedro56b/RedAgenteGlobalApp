@@ -1,8 +1,8 @@
 package com.dataservicios.redagenteglobalapp;
-
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.ProgressDialog;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.os.Bundle;
@@ -15,13 +15,25 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.dataservicios.SQLite.DatabaseHelper;
+import com.dataservicios.librerias.GlobalConstant;
 import com.dataservicios.librerias.SessionManager;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import adapter.NavDrawerListAdapter;
+import app.AppController;
+import model.Agentes;
 import model.NavDrawerItem;
-
 /**
  * Created by usuario on 26/11/2014.
  */
@@ -31,44 +43,70 @@ public class BaseActivity extends Activity {
     private ActionBarDrawerToggle mDrawerToggle;
     // nav drawer title
     private CharSequence mDrawerTitle;
-
     // used to store app title
     private CharSequence mTitle;
-
     // slide menu items
     private String[] navMenuTitles;
     private TypedArray navMenuIcons;
-
     private ArrayList<NavDrawerItem> navDrawerItems;
     private NavDrawerListAdapter adapter;
     private SessionManager session;
+    private String code_user, id_user, name_user;
+    private JSONObject params;
+    private DatabaseHelper db;
+    // JSON Node names
+    private static final String TAG_SUCCESS = "success";
+    private static final String TAG_AGENTES = "agentes";
+    private static final String TAG_ID = "id";
+    private static final String TAG_TIENDA = "nombre_comercial";
+    private static final String TAG_DIRECCION = "direccion";
+    private static final String TAG_STATUS = "status";
+    private static final String TAG_INICIO = "inicio";
+    private static final String TAG_FIN = "fin";
+    private static String url_all_agentes = "http://redagentesyglobalnet.com/JsonAgentList";
 
-
+    private ProgressDialog pDialog;
+    final Activity MyActivity = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_paneladmin);
         session = new SessionManager(getApplicationContext());
-        mTitle = mDrawerTitle = getTitle();
 
+        HashMap<String, String> user = session.getUserDetails();
+        // name
+        name_user = user.get(SessionManager.KEY_NAME);
+        // email
+        code_user = user.get(SessionManager.KEY_USER);
+        // id
+        id_user = user.get(SessionManager.KEY_ID_USER);
+
+        db = new DatabaseHelper(MyActivity);
+        params = new JSONObject();
+
+
+            try {
+                params.put("id", id_user);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        mTitle = mDrawerTitle = getTitle();
         // load slide menu items
         navMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
-
         // nav drawer icons from resources
         navMenuIcons = getResources()
                 .obtainTypedArray(R.array.nav_drawer_icons);
-
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.list_slidermenu);
-
         navDrawerItems = new ArrayList<NavDrawerItem>();
-
         // adding nav drawer items to array
         // Home
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1)));
-        // Find People
-        //navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1)));
+        // Sincronia de Agentes
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1)));
         // Photos
         //navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));
         // Communities, Will add a counter here
@@ -77,22 +115,16 @@ public class BaseActivity extends Activity {
         //navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1)));
         // What's hot, We  will add a counter here
         //navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(5, -1), true, "50+"));
-
-
         // Recycle the typed array
         navMenuIcons.recycle();
-
         mDrawerList.setOnItemClickListener(new SlideMenuClickListener());
-
         // setting the nav drawer list adapter
         adapter = new NavDrawerListAdapter(getApplicationContext(),
                 navDrawerItems);
         mDrawerList.setAdapter(adapter);
-
         // enabling action bar app icon and behaving it as toggle button
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
-
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
                 R.drawable.ic_drawer, //nav menu toggle icon
                 R.string.app_name, // nav drawer open - description for accessibility
@@ -111,6 +143,8 @@ public class BaseActivity extends Activity {
             }
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
+
+
 
         if (savedInstanceState == null) {
             // on first time display view for first nav item
@@ -153,7 +187,6 @@ public class BaseActivity extends Activity {
                 return super.onOptionsItemSelected(item);
         }
     }
-
     /***
      * Called when invalidateOptionsMenu() is triggered
      */
@@ -164,7 +197,6 @@ public class BaseActivity extends Activity {
         menu.findItem(R.id.action_salir).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
     }
-
     /**
      * Diplaying fragment view for selected nav drawer list item
      * */
@@ -178,7 +210,12 @@ public class BaseActivity extends Activity {
                 fragment = new ListofAgentsFragment();
                 break;
             case 1:
-               fragment = new GraficosFragment();
+                pDialog = new ProgressDialog(MyActivity);
+                pDialog.setMessage("Please wait...");
+                pDialog.setCancelable(false);
+
+                cargaAgentes();
+                fragment = new ListofAgentsFragment();
                 break;
             case 2:
                 //fragment = new PhotosFragment();
@@ -196,7 +233,6 @@ public class BaseActivity extends Activity {
             default:
                 break;
         }
-
         if (fragment != null) {
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction()
@@ -212,25 +248,21 @@ public class BaseActivity extends Activity {
             Log.e("MainActivity", "Error in creating fragment");
         }
     }
-
     @Override
     public void setTitle(CharSequence title) {
         mTitle = title;
         getActionBar().setTitle(mTitle);
     }
-
     /**
      * When using the ActionBarDrawerToggle, you must call it during
      * onPostCreate() and onConfigurationChanged()...
      */
-
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         // Sync the toggle state after onRestoreInstanceState has occurred.
         mDrawerToggle.syncState();
     }
-
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -252,4 +284,77 @@ public class BaseActivity extends Activity {
         finish();
         startActivity(getIntent());
     }
+
+    private void cargaAgentes() {
+        showpDialog();
+        db.deleteAllAgentes();
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST , url_all_agentes ,params,
+                new Response.Listener<JSONObject>()
+                {
+                    @Override
+                    public void onResponse(JSONObject response)
+                    {
+                        Log.d("DATAAAA", response.toString());
+                        //adapter.notifyDataSetChanged();
+                        try {
+                            //String agente = response.getString("agentes");
+                            int success =  response.getInt("success");
+                            if (success == 1) {
+                                //db.deleteAllAgentes();
+                                JSONArray agentesObjJson;
+                                agentesObjJson = response.getJSONArray("agentes");
+                                // looping through All Products
+                                for (int i = 0; i < agentesObjJson.length(); i++) {
+                                    JSONObject obj = agentesObjJson.getJSONObject(i);
+                                    // Storing each json item in variable id_user
+                                    Agentes agentes = new Agentes();
+                                    agentes.setId(Integer.valueOf(obj.getString(TAG_ID)));
+                                    agentes.setThumbnailUrl( GlobalConstant.URL_IMAGES_AGENT + obj.getString("photo"));
+                                    agentes.setDireccion(obj.getString(TAG_DIRECCION));
+                                    agentes.setNombreAgente(obj.getString(TAG_TIENDA));
+                                    agentes.setRazonSocial(obj.getString("nombre_comercial"));
+                                    agentes.setIdUser(Integer.valueOf(id_user));
+                                    agentes.setStatus(obj.getInt(TAG_STATUS));
+                                    agentes.setInicio(obj.getString(TAG_INICIO));
+                                    agentes.setFin(obj.getString(TAG_FIN));
+                                    // agentes.setStatus(obj.getInt("status"));
+                                    // adding HashList to ArrayList
+
+                                    db.ingresarAgentes(agentes);
+                                    //agentesList.add(agentes);
+                                }
+                                adapter.notifyDataSetChanged();
+
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
+                        hidePDialog();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        //VolleyLog.d(TAG, "Error: " + error.getMessage());
+                        hidePDialog();
+                    }
+                }
+        );
+
+        AppController.getInstance().addToRequestQueue(jsObjRequest);
+    }
+
+
+    private void showpDialog() {
+        if (!pDialog.isShowing())
+            pDialog.show();
+    }
+
+    private void hidePDialog() {
+        if (pDialog.isShowing())
+            pDialog.dismiss();
+    }
+
 }

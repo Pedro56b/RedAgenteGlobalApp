@@ -349,7 +349,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void deleteAllPublicidad() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_PUBLICIDAD, null, null );
-
     }
     // ------------------------ "PublicidadDetalle" table methods ----------------//
     /*
@@ -625,7 +624,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return agentes;
     }
-
+    public void deleteAllAgentes() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_AGENTS, null, null );
+    }
     /*
      * Ingresar datos de agentes a tabla sqlLite
      */

@@ -49,8 +49,6 @@ public class ChecklistActivity extends Activity {
     Button guardarchecklistButton;
     RadioGroup tiporadioGroup;
     RadioButton derivacionButton, influenciaButton, periferiaButton;
-
-
     int mYear, mMonth, mDay, hour, minute;
     private String array_spinner[], contacto_ids[];
     private ProgressDialog pDialog;
@@ -209,25 +207,22 @@ public class ChecklistActivity extends Activity {
                                         fact_pend_val = 1;
                                     else
                                         fact_pend_val = 0;
-
-                                    params.put("id_agente", id_agente );
-                                    params.put("fec_desc", fechaEditText.getText() );
-                                    params.put("hor_desc", horaEditText.getText() );
-                                    params.put("ext_desc", extEditText.getText() );
-                                    params.put("int_desc", intEditText.getText() );
-                                    params.put("otro_agente_desc", otroagenteEditText.getText() );
-                                    params.put("fact_pend_desc", factEditText.getText()  );
-                                    params.put("tienda_frec_desc", tiendafrecEditText.getText()  );
-                                    params.put("tipo_agente_desc", derivEditText.getText() );
-                                    params.put("datos_relev", relevEditText.getText() );
-                                    params.put("contacto_id", contacto_ids[contactoSpinner.getSelectedItemPosition()]  );
-                                    params.put("ext_val",  ext_val   );
-                                    params.put("int_val",   int_val  );
-                                    params.put("otro_agente_val",  otro_agente_val   );
-                                    params.put("fact_pend_val",  fact_pend_val   );
-                                    params.put("tipo_agente_val", tipo_agente  );
-
-
+                                        params.put("id_agente", id_agente );
+                                        params.put("fec_desc", fechaEditText.getText() );
+                                        params.put("hor_desc", horaEditText.getText() );
+                                        params.put("ext_desc", extEditText.getText() );
+                                        params.put("int_desc", intEditText.getText() );
+                                        params.put("otro_agente_desc", otroagenteEditText.getText() );
+                                        params.put("fact_pend_desc", factEditText.getText()  );
+                                        params.put("tienda_frec_desc", tiendafrecEditText.getText()  );
+                                        params.put("tipo_agente_desc", derivEditText.getText() );
+                                        params.put("datos_relev", relevEditText.getText() );
+                                        params.put("contacto_id", contacto_ids[contactoSpinner.getSelectedItemPosition()]  );
+                                        params.put("ext_val",  ext_val   );
+                                        params.put("int_val",   int_val  );
+                                        params.put("otro_agente_val",  otro_agente_val   );
+                                        params.put("fact_pend_val",  fact_pend_val   );
+                                        params.put("tipo_agente_val", tipo_agente  );
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
