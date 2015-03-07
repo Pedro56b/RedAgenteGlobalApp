@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
@@ -62,6 +63,7 @@ public class AgentesAdapter extends BaseAdapter {
         TextView tvTienda = (TextView) convertView.findViewById(R.id.tienda);
         TextView tvDireccion = (TextView) convertView.findViewById(R.id.direccion);
         TextView tvIdAgente = (TextView) convertView.findViewById(R.id.id);
+        ImageView imgStatus = (ImageView) convertView.findViewById(R.id.imgStatus);
         // getting ruta data for the row
         Agentes m = agenteItems.get(position);
         // thumbnail image
@@ -74,11 +76,13 @@ public class AgentesAdapter extends BaseAdapter {
         // release year
         tvIdAgente.setText(String.valueOf(m.getId()) );
 
-//        if(m.getStatus()==0){
-//            imgStatus.setImageResource(R.drawable.ic_check_off);
-//        } else if(m.getStatus()==1){
-//            imgStatus.setImageResource(R.drawable.ic_check_on);
-//        }
+
+
+        if(m.getStatus()==0){
+            imgStatus.setImageResource(R.drawable.ic_check_off);
+        } else if(m.getStatus()==1){
+            imgStatus.setImageResource(R.drawable.ic_check_on);
+        }
 
         return convertView;
     }

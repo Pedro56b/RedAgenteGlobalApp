@@ -1,55 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal"
-    android:layout_marginTop="10dp"
-    android:layout_marginBottom="10dp">
-    <TextView
-        android:id="@+id/id"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone" />
+    android:layout_height="wrap_content"
+    android:background="@drawable/list_row_selector"
+    android:padding="4dp" >
 
-    <!-- Product id (pid) - will be HIDDEN - used to pass to other activity -->
-    <!--<ImageView-->
-        <!--android:layout_width="80dp"-->
-        <!--android:layout_height="80dp"-->
-        <!--android:id="@+id/Flag"-->
-        <!--android:layout_margin="5dp" />-->
-    <com.android.volley.toolbox.NetworkImageView
-        android:id="@+id/thumbnail"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_alignParentLeft="true"
-        android:layout_marginRight="5dp"
-        android:layout_marginLeft="5dp"/>
 
-    <!-- Name Label -->
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        <com.android.volley.toolbox.NetworkImageView
+            android:id="@+id/thumbnail"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"/>
+        <!-- Name Label -->
+            <TextView
+                android:id="@+id/id"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:textSize="@dimen/textoGeneral"/>
+            <TextView
+                android:id="@+id/tienda"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="6dip"
+                android:paddingLeft="6dip"
+                android:textSize="@dimen/textoGeneral"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:layout_toRightOf="@+id/thumbnail" />
+            <TextView
+                android:id="@+id/direccion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="6dip"
+                android:paddingLeft="6dip"
+                android:textSize="@dimen/textoGeneral"
+                android:textColor="@android:color/black"
+                android:layout_toRightOf="@+id/thumbnail"
+                android:layout_below="@+id/tienda" />
 
-        <TextView
-            android:id="@+id/tienda"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="6dip"
-            android:paddingLeft="6dip"
-            android:textSize="@dimen/title"
+        <ImageView
+            android:id="@+id/imgStatus"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:padding="5dp"
+            android:src="@drawable/ic_check_off"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"/>
 
-            android:textColor="@android:color/black" />
-
-        <TextView
-            android:id="@+id/direccion"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="6dip"
-            android:paddingLeft="6dip"
-            android:textSize="@dimen/sub_title"
-            android:textColor="@android:color/black" />
-    </LinearLayout>
-
-</LinearLayout>
+    </RelativeLayout>

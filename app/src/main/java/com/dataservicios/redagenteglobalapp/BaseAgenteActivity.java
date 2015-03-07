@@ -348,10 +348,7 @@ public class BaseAgenteActivity extends Activity
                     }
                 }
         );
-
         AppController.getInstance().addToRequestQueue(jsObjRequest);*/
-
-
 
     }
 
