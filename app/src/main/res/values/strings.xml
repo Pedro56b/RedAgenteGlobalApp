@@ -37,6 +37,7 @@
         <item>Pedidos</item>
         <item>Transacciones</item>
         <item>Facturación</item>
+        <item>Deuda</item>
         <item>Foto</item>
         <item>Finalizar Agente</item>
     </array>
@@ -50,6 +51,7 @@
         <item>@drawable/ic_pedido</item>
         <item>@drawable/ic_transaction</item>
         <item>@drawable/ic_facturacion</item>
+        <item>@drawable/ic_deuda</item>
         <item>@drawable/ic_foto</item>
         <item>@drawable/ic_action_icon_exit</item>
     </array>

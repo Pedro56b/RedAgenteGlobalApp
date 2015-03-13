@@ -90,10 +90,12 @@ public class BaseAgenteActivity extends Activity
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(5, -1)));
         // facturacion
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[6], navMenuIcons.getResourceId(6, -1)));
-        // Foto
+        // deuda
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[7], navMenuIcons.getResourceId(7, -1)));
-        //Cerrar auditoria
+        // Foto
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[8], navMenuIcons.getResourceId(8, -1)));
+        //Cerrar auditoria
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[9], navMenuIcons.getResourceId(9, -1)));
         // Recycle the typed array
         navMenuIcons.recycle();
 
@@ -246,13 +248,21 @@ public class BaseAgenteActivity extends Activity
                 startActivity(i_5);
                 break;
             case 7:
-                Intent i_6 = new Intent( this , AndroidCustomGalleryActivity.class);
+                // Intent i_4 = new Intent( this , TransaccionesAgenteActivity.class);
+                Intent i_6 = new Intent( this , Deuda.class);
                 Bundle bolsa_6 = new Bundle();
                 bolsa_6.putString("id", aid);
                 i_6.putExtras(bolsa_6);
                 startActivity(i_6);
                 break;
             case 8:
+                Intent i_7 = new Intent( this , AndroidCustomGalleryActivity.class);
+                Bundle bolsa_7 = new Bundle();
+                bolsa_7.putString("id", aid);
+                i_7.putExtras(bolsa_7);
+                startActivity(i_7);
+                break;
+            case 9:
                // GlobalConstant.inicio = strDate;
                 Calendar c = Calendar.getInstance();
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
