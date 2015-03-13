@@ -28,7 +28,9 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.ByteArrayBody;
 import org.apache.http.entity.mime.content.ContentBody;
+import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.InputStreamBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
@@ -79,8 +81,6 @@ public class UploadService extends IntentService{
             Uri uri;
             int lastPercent = 0;
             //uri=arg0[0];
-
-
             for (int i = 0; i < arg0[0].size(); i++) {
                 String foto = arg0[0].get(i);
                 if (uploadFoto(getAlbumDir().getAbsolutePath() + "/" + foto) && onInsert(foto)) {
@@ -88,8 +88,7 @@ public class UploadService extends IntentService{
                     file.delete();
                 }
             }
-
-            return null;
+           return null;
 
 
 //            final HttpResponse resp;
@@ -167,14 +166,13 @@ public class UploadService extends IntentService{
         File file = new File(imag);
         Bitmap bbicon;
          HttpResponse resp;
+
         HttpClient httpClient = new DefaultHttpClient();
         Intent notificationIntent = new Intent();
         PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
-        notification = new Notification(R.drawable.ic_salir, "Subiendo archivo", System.currentTimeMillis());
-        notification.flags = notification.flags
-                | Notification.FLAG_ONGOING_EVENT;
-        notification.contentView = new RemoteViews(getApplicationContext()
-                .getPackageName(), R.layout.upload_progress_bar);
+        notification = new Notification(R.drawable.ic_salir, "Red Agente Global", System.currentTimeMillis());
+        notification.flags = notification.flags | Notification.FLAG_ONGOING_EVENT;
+        notification.contentView = new RemoteViews(getApplicationContext().getPackageName(), R.layout.upload_progress_bar);
         notification.contentIntent = contentIntent;
         notification.contentView.setProgressBar(R.id.progressBar1, 100,0, true);
         notificationManager.notify(1, notification);
@@ -186,10 +184,19 @@ public class UploadService extends IntentService{
         Bitmap scaledBitmap = scaleDown(bbicon, 450 , true);
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+        //bbicon.compress(Bitmap.CompressFormat.JPEG, 100, bos);
         InputStream in = new ByteArrayInputStream(bos.toByteArray());
         // InputStream in = new ByteArrayInputStream(bos.toByteArray());
 
-        //ContentBody foto = new InputStreamBody(in, "image/jpeg", "filename");
+        //If you are stuck with HTTPClient 4.0, use InputStreamBody instead:
+        //ContentBody foto = new InputStreamBody(in, "image/jpeg", file.getName());
+
+
+        //ContentBody foto = new FileBody(file, "image/jpeg");
+
+        //Use a ByteArrayBody instead (available since HTTPClient 4.1), despite its name it takes a file name, too:
+        ContentBody foto = new ByteArrayBody(bos.toByteArray(), file.getName());
+
 
         HttpClient httpclient = new DefaultHttpClient();
 
@@ -203,8 +210,7 @@ public class UploadService extends IntentService{
                 notificationManager.notify(1, notification);
             }
         });
-        //ContentBody foto = new FileBody(file, "image/jpeg");
-        ContentBody foto = new InputStreamBody(in, "image/jpeg", file.getName());
+
         totalSize =  mpEntity.getContentLength();
         mpEntity.addPart("fotoUp", foto);
         httppost.setEntity(mpEntity);
@@ -213,11 +219,14 @@ public class UploadService extends IntentService{
             Log.i("FOO", "About to call httpClient.execute");
             resp = httpClient.execute(httppost);
             if (resp.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-                notification.setLatestEventInfo(context, "Se subió el archivo", "Subidad terminada", contentIntent);
+                notification.setLatestEventInfo(context, "Red Agente Global", "Se subió correctamente la imágen", contentIntent);
                 notification.flags |= Notification.FLAG_AUTO_CANCEL;
                 notificationManager.notify(1, notification);
                 Log.i("FOO", "All done");
             } else {
+                notification.setLatestEventInfo(context, "Red Agente Global", "Ocurrió un error, no se pudo subir el archivo", contentIntent);
+                notification.flags |= Notification.FLAG_AUTO_CANCEL;
+                notificationManager.notify(1, notification);
                 Log.i("FOO", "Screw up with http - " + resp.getStatusLine().getStatusCode());
             }
             resp.getEntity().consumeContent();

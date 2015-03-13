@@ -118,8 +118,8 @@ public class AndroidCustomGalleryActivity extends Activity {
                 String imageFileName = String.format("%06d", Integer.parseInt(id_agente))+JPEG_FILE_PREFIX + timeStamp;
                 File albumF = getAlbumDir();
                 // to save picture remove comment
-                File file = new File(albumF,
-                imageFileName+JPEG_FILE_SUFFIX);
+                File file = new File(albumF,imageFileName+JPEG_FILE_SUFFIX);
+
                 Uri photoPath = Uri.fromFile(file);
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, photoPath);
 
@@ -194,7 +194,6 @@ public class AndroidCustomGalleryActivity extends Activity {
                 intent.putExtra("id", id_agente);
                 //intent.set(names);
                 startService(intent);
-
                 // getting values from selected ListItem
                 String aid = id_agente;
                 // Starting new intent
@@ -263,8 +262,8 @@ public class AndroidCustomGalleryActivity extends Activity {
         httpclient.getParams().setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
         HttpPost httppost = new HttpPost(url_upload_image);
         MultipartEntity mpEntity = new MultipartEntity();
-        //ContentBody foto = new FileBody(file, "image/jpeg");
-        ContentBody foto = new InputStreamBody(in, "image/jpeg", file.getName());
+        ContentBody foto = new FileBody(file, "image/jpeg");
+        //ContentBody foto = new InputStreamBody(in, "image/jpeg", file.getName());
         mpEntity.addPart("fotoUp", foto);
         httppost.setEntity(mpEntity);
 
