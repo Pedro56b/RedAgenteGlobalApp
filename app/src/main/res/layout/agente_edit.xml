@@ -38,7 +38,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/etAlto"
                     android:scrollbars="vertical"
-                    android:maxWidth="200dp" />
+                    android:maxWidth="200dp"
+                    android:singleLine="true"
+                    android:inputType="textNoSuggestions|textImeMultiLine" />
             </TableRow>
             <TableRow
                 android:id="@+id/widget37"
@@ -55,7 +57,9 @@
                     android:id="@+id/direccion_edt"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/etAlto"
-                    android:maxWidth="200dp" />
+                    android:maxWidth="200dp"
+                    android:singleLine="true"
+                    android:inputType="textNoSuggestions|textImeMultiLine" />
             </TableRow>
             <TableRow
                 android:id="@+id/widget38"
@@ -73,7 +77,8 @@
                     android:id="@+id/representante_edt"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/etAlto"
-                    android:maxWidth="200dp" />
+                    android:maxWidth="200dp"
+                    android:inputType="number" />
             </TableRow>
             <TableRow
                 android:id="@+id/widget39"
@@ -90,7 +95,8 @@
                     android:id="@+id/telefono_edt"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/etAlto"
-                    android:maxWidth="200dp" />
+                    android:maxWidth="200dp"
+                    android:inputType="phone" />
             </TableRow>
 
 

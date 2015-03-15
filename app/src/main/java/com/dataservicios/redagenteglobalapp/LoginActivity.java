@@ -92,7 +92,7 @@ public class LoginActivity extends ActionBarActivity  implements View.OnClickLis
                 }
                 break;
             case R.id.btLlamar:
-                makeCall("012869402");
+                makeCall("948337893");
                 break;
             case R.id.btUbicar:
 //                GPSTracker gps = new GPSTracker(this);

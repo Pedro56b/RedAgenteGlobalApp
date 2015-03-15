@@ -45,7 +45,7 @@
                     android:id="@+id/etUsuario"
                     android:ems="10"
                     android:singleLine="true"
-                    android:text="B10039">
+                    android:text="">
                     <requestFocus />
                 </EditText>
             </LinearLayout>
@@ -68,7 +68,7 @@
                     android:password="true"
                     android:id="@+id/etContrasena"
                     android:inputType="textPassword"
-                    android:text="123456" />
+                    android:text="" />
             </LinearLayout>
         </LinearLayout>
 

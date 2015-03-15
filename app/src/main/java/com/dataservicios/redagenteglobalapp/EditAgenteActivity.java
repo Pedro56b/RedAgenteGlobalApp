@@ -29,11 +29,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import app.AppController;
-
 /**
  * Created by user on 06/02/2015.
  */
-
 //extends BaseAgenteActivity
 public class EditAgenteActivity extends Activity {
 
