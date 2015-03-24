@@ -1,11 +1,13 @@
 package com.dataservicios.redagenteglobalapp;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -13,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.dataservicios.SQLite.DatabaseHelper;
 import com.dataservicios.librerias.GPSTracker;
 import com.dataservicios.librerias.GlobalConstant;
 import com.dataservicios.librerias.GlobalMessage;
@@ -27,6 +30,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.User;
+
 /**
  * Created by usuario on 05/11/2014.
  */
@@ -35,6 +40,9 @@ public class LoginActivity extends ActionBarActivity  implements View.OnClickLis
     Button llamar;
     Button ubicar;
     EditText usuario,contrasena;
+    String IdDevice;
+    // Database Helper
+    private DatabaseHelper db;
 
     // Progress Dialog
     private ProgressDialog pDialog;
@@ -55,6 +63,21 @@ public class LoginActivity extends ActionBarActivity  implements View.OnClickLis
         ingresar.setOnClickListener(this);
         llamar.setOnClickListener(this);
         ubicar.setOnClickListener(this);
+
+        db = new DatabaseHelper(getApplicationContext());
+        //Obteniendo el ID device
+        TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+        IdDevice=telephonyManager.getDeviceId();
+        if(db.getUserCount() > 0) {
+            User users = new User();
+            users = db.getUser(1);
+            usuario.setText(users.getNombre());
+            contrasena.setText(users.getPassword());
+        }
+
+
+        //Obteniedo user y pasword de la base de datos local si ya se ha logeado ateriormente
+
 
         // Session Manager
         session = new SessionManager(getApplicationContext());
@@ -148,6 +171,7 @@ public class LoginActivity extends ActionBarActivity  implements View.OnClickLis
                 List<NameValuePair> params = new ArrayList<NameValuePair>();
                 params.add(new BasicNameValuePair("username", username));
                 params.add(new BasicNameValuePair("password", password));
+                params.add(new BasicNameValuePair("iddevice", IdDevice));
 
                 Log.d("request!", "starting");
                 // getting product details by making HTTP request
@@ -163,6 +187,13 @@ public class LoginActivity extends ActionBarActivity  implements View.OnClickLis
                 if (success == 1) {
                     Log.d("Login Successful!", json.toString());
                     Intent i = new Intent(LoginActivity.this, PanelAdmin.class);
+
+                    db.deleteAllUser();
+                    User users = new User();
+                    users.setId(1);
+                    users.setNombre( usuario.getText().toString());
+                    users.setPassword(contrasena.getText().toString());
+                    db.createUser(users);
                     //Enviando los datos usando Bundle a otro activity
                     session.createLoginSession("Jaimito el Cartero",id_user, username);
                     Bundle bolsa = new Bundle();

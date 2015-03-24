@@ -6,8 +6,6 @@
        <!--<item name="android:windowBackground">@color/colo_buttom_naranja_pressed</item>-->
        <item name="actionBarStyle">@style/MyActionBar</item>
        <item name="android:popupMenuStyle">@style/PopupMenu</item>
-
-
     </style>
     <!-- Base application theme. -->
     <style name="AppThemeAdminPanel" parent="@android:style/Theme.Holo.Light.DarkActionBar">

@@ -22,6 +22,7 @@ import model.Publicidad;
 import model.PublicidadDetalle;
 import model.TipoReclamo;
 import model.Agentes;
+import model.User;
 
 /**
  * Created by usuario on 12/02/2015.
@@ -30,7 +31,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Logcat tag
     private static final String LOG = "DatabaseHelper";
     // Database Version
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
     // Database Name
     //private static final String DATABASE_NAME = "agenteGlobalNet";
     // Table Names
@@ -41,9 +42,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TABLE_PUBLICIDAD_DETALLE = "publicidad_detalle";
     private static final String TABLE_TIPO_RECLAMO = "tipo_reclamo";
     private static final String TABLE_USER_AGENTS = "user_agents";
+    private static final String TABLE_USER = "user";
     //Nombre de columnas en comun
     private static final String KEY_ID = "id";
     private static final String KEY_NOMBRE = "nombre";
+    private static final String KEY_PASSWORD = "password";
 
     // TABLE_PUBLICIDAD_DETALLE Table - column names
     private static final String KEY_PEDIDO_ID = "id_pedido";
@@ -62,7 +65,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String CREATE_TABLE_PEDIDO = "CREATE TABLE "
             + TABLE_PEDIDO + "(" + KEY_ID + " INTEGER PRIMARY KEY," + KEY_NOMBRE
             + " TEXT" + ")";
-
+    // Pedido table create statement
+    private static final String CREATE_TABLE_USER = "CREATE TABLE "
+            + TABLE_USER + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
+            + KEY_NOMBRE + " TEXT,"
+            + KEY_PASSWORD + " TEXT " + ")";
     // Tag table create statement
     private static final String CREATE_TABLE_PUBLICIDAD = "CREATE TABLE " + TABLE_PUBLICIDAD
             + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
@@ -108,6 +115,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_PUBLICIDAD_DETALLE);
         db.execSQL(CREATE_TABLE_TIPO_RECLAMO);
         db.execSQL(CREATE_TABLE_AGENT);
+        db.execSQL(CREATE_TABLE_USER);
     }
 
 
@@ -120,6 +128,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PUBLICIDAD_DETALLE);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_TIPO_RECLAMO);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_AGENTS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER);
         // create new tables
         onCreate(db);
     }
@@ -233,6 +242,121 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.delete(TABLE_PEDIDO, null, null );
 
     }
+    // ------------------------ "USER" table methods ----------------//
+    /*
+     * Creating a USER
+     */
+    /*
+     * Creating a USER
+     */
+    public long createUser(User user) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put(KEY_ID, user.getId());
+        values.put(KEY_NOMBRE, user.getNombre());
+        values.put(KEY_PASSWORD, user.getPassword());
+
+        // insert row
+        //long todo_id = db.insert(TABLE_PEDIDO, null, values);
+        db.insert(TABLE_USER, null, values);
+
+        long todo_id = user.getId();
+        return todo_id;
+    }
+
+
+
+    /*
+     * get single Pedido
+     */
+    public User getUser(long id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectQuery = "SELECT  * FROM " + TABLE_USER + " WHERE "
+                + KEY_ID + " = " + id;
+        Log.e(LOG, selectQuery);
+        Cursor c = db.rawQuery(selectQuery, null);
+        if (c != null)
+            c.moveToFirst();
+        User pd = new User();
+        pd.setId(c.getInt(c.getColumnIndex(KEY_ID)));
+        pd.setNombre((c.getString(c.getColumnIndex(KEY_NOMBRE))));
+        pd.setPassword((c.getString(c.getColumnIndex(KEY_PASSWORD))));
+        return pd;
+    }
+
+    /**
+     * getting all Pedido
+     * */
+    public List<User> getAllUser() {
+        List<User> users = new ArrayList<User>();
+        String selectQuery = "SELECT  * FROM " + TABLE_USER;
+
+        Log.e(LOG, selectQuery);
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (c.moveToFirst()) {
+            do {
+                User pd = new User();
+                pd.setId(c.getInt((c.getColumnIndex(KEY_ID))));
+                pd.setNombre((c.getString(c.getColumnIndex(KEY_NOMBRE))));
+                pd.setPassword((c.getString(c.getColumnIndex(KEY_PASSWORD))));
+                // adding to todo list
+                users.add(pd);
+            } while (c.moveToNext());
+        }
+        return users;
+    }
+
+    /*
+     * getting Publicidad count
+     */
+    public int getUserCount() {
+        String countQuery = "SELECT  * FROM " + TABLE_USER;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(countQuery, null);
+        int count = cursor.getCount();
+        Log.e(LOG, countQuery);
+        cursor.close();
+        // return count
+        return count;
+    }
+    /*
+     * Updating a Pedido
+     */
+    public int updatePedido(User user) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_NOMBRE, user.getNombre());
+        values.put(KEY_PASSWORD, user.getPassword());
+        // updating row
+        return db.update(TABLE_USER, values, KEY_ID + " = ?",
+                new String[] { String.valueOf(user.getId()) });
+    }
+
+    /*
+     * Deleting a Pedido
+     */
+    public void deleteUser(long id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_USER, KEY_ID + " = ?",
+                new String[] { String.valueOf(id) });
+    }
+
+    /*
+     * Deleting all Pedido
+     */
+    public void deleteAllUser() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_USER, null, null );
+
+    }
+
 
     // ------------------------ "publicidad" table methods ----------------//
     /*
