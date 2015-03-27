@@ -75,6 +75,7 @@ public class ListofAgentsFragment extends Fragment {
     private static String url_all_agentes = "http://redagentesyglobalnet.com/JsonAgentList";
     private SessionManager session;
     private String code_user, id_user, name_user;
+    private String idtienda;
     private Bundle args;
     private JSONObject params;
 
@@ -128,6 +129,7 @@ public class ListofAgentsFragment extends Fragment {
             try {
                 params.put("id", id_user);
                 params.put("search",search);
+                //idtienda = search;
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -136,6 +138,7 @@ public class ListofAgentsFragment extends Fragment {
             try {
                 params.put("id", id_user);
                 params.put("search",search);
+                //idtienda = search;
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -162,9 +165,17 @@ public class ListofAgentsFragment extends Fragment {
         if (countReg==0){
             cargaAgentes();
         }else{
-            adapter = new AgentesAdapter(getActivity(), db.getAllAgents(Integer.valueOf(id_user)));
+            if (search == ""){
+                adapter = new AgentesAdapter(getActivity(), db.getAllAgents(Integer.valueOf(id_user)));
+                adapter.notifyDataSetChanged();
 
-            adapter.notifyDataSetChanged();
+            } else {
+                //Log.i("SEARCH....","hay datos para Buscar");
+
+                adapter = new AgentesAdapter(getActivity(), db.getSearcAgents(Integer.valueOf(id_user),search));
+                adapter.notifyDataSetChanged();
+            }
+
 
         }
 

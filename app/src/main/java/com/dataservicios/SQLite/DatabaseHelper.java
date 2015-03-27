@@ -748,6 +748,41 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return agentes;
     }
+    /**
+     * Search all Agents por iduser and tienda
+     * */
+    public List<Agentes> getSearcAgents(long idUser, String Search) {
+        List<Agentes> agentes = new ArrayList<Agentes>();
+        String selectQuery = "SELECT  * FROM " + TABLE_AGENTS + " WHERE "
+                + KEY_IDUSER + " = " + idUser + " AND " + KEY_NOMBRE  + " like '%" + Search  + "%'" ;
+
+        Log.e(LOG, selectQuery);
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (c.moveToFirst()) {
+            do {
+                Agentes pd = new Agentes();
+                pd.setId(c.getInt((c.getColumnIndex(KEY_ID))));
+                pd.setNombreAgente((c.getString(c.getColumnIndex(KEY_NOMBRE))));
+                pd.setRazonSocial((c.getString(c.getColumnIndex(KEY_RAZON))));
+                pd.setCta_cte((c.getString(c.getColumnIndex(KEY_CTA))));
+                pd.setThumbnailUrl((c.getString(c.getColumnIndex(KEY_THUMB))));
+                pd.setDireccion((c.getString(c.getColumnIndex(KEY_ADDRESS))));
+                pd.setStatus(c.getInt(c.getColumnIndex(KEY_STATUS)));
+                pd.setInicio(c.getString(c.getColumnIndex(KEY_INICIO)));
+                pd.setFin(c.getString(c.getColumnIndex(KEY_FIN)));
+                Log.d("StatusAgent", c.getString(c.getColumnIndex(KEY_STATUS)));
+                Log.d("InicioAgent", c.getString(c.getColumnIndex(KEY_INICIO)));
+                Log.d("FinAgent", c.getString(c.getColumnIndex(KEY_FIN)));
+                // adding to todo list
+                agentes.add(pd);
+            } while (c.moveToNext());
+        }
+        return agentes;
+    }
     public void deleteAllAgentes() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_AGENTS, null, null );
