@@ -195,7 +195,7 @@ public class LoginActivity extends ActionBarActivity  implements View.OnClickLis
                     users.setPassword(contrasena.getText().toString());
                     db.createUser(users);
                     //Enviando los datos usando Bundle a otro activity
-                    session.createLoginSession("Jaimito el Cartero",id_user, username);
+                    session.createLoginSession("Sin Nombre",id_user, username);
                     Bundle bolsa = new Bundle();
                     bolsa.putString("NOMBRE", username);
                     i.putExtras(bolsa);

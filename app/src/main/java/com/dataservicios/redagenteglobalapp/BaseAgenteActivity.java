@@ -23,6 +23,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.dataservicios.librerias.GPSTracker;
 import com.dataservicios.librerias.GlobalConstant;
 import com.dataservicios.librerias.SessionManager;
 import com.dataservicios.SQLite.DatabaseHelper;
@@ -33,6 +34,7 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 
 import adapter.NavDrawerListAdapter;
 import app.AppController;
@@ -61,11 +63,18 @@ public class BaseAgenteActivity extends Activity
     private SessionManager session;
     private DatabaseHelper db;
 
+    private String code_user, user_id, name_user;
+    private Integer status;
 
 
 
     protected void onCreateDrawer(){
         MyActivity = (Activity) this;
+
+        //Bundle bundle = getIntent().getExtras();
+        //String id_agente = bundle.getString(TAG_ID);
+        //status = Integer.valueOf(bundle.getString("status")) ;
+
         session = new SessionManager(getApplicationContext());
         mTitle = mDrawerTitle = getTitle();
         // load slide menu items
@@ -75,27 +84,32 @@ public class BaseAgenteActivity extends Activity
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.list_slidermenu);
         navDrawerItems = new ArrayList<NavDrawerItem>();
+
         // adding nav drawer items to array
         // Lista de agentes
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1)));
-        // Editar Agente
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1)));
-        // Checklist
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));
-        // Reclamos
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1)));
-        // Pedidos
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1)));
-        // Transacciones
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(5, -1)));
-        // facturacion
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[6], navMenuIcons.getResourceId(6, -1)));
-        // deuda
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[7], navMenuIcons.getResourceId(7, -1)));
-        // Foto
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[8], navMenuIcons.getResourceId(8, -1)));
-        //Cerrar auditoria
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[9], navMenuIcons.getResourceId(9, -1)));
+
+        if (GlobalConstant.status==0) {
+            // Editar Agente
+            navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1)));
+            // Checklist
+            navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));
+            // Reclamos
+            navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1)));
+            // Pedidos
+            navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1)));
+            // Transacciones
+            navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(5, -1)));
+            // facturacion
+            navDrawerItems.add(new NavDrawerItem(navMenuTitles[6], navMenuIcons.getResourceId(6, -1)));
+            // deuda
+            navDrawerItems.add(new NavDrawerItem(navMenuTitles[7], navMenuIcons.getResourceId(7, -1)));
+            // Foto
+            navDrawerItems.add(new NavDrawerItem(navMenuTitles[8], navMenuIcons.getResourceId(8, -1)));
+            //Cerrar auditoria
+            navDrawerItems.add(new NavDrawerItem(navMenuTitles[9], navMenuIcons.getResourceId(9, -1)));
+        }
+
         // Recycle the typed array
         navMenuIcons.recycle();
 
@@ -189,6 +203,7 @@ public class BaseAgenteActivity extends Activity
         Bundle bundle = getIntent().getExtras();
         String id_agente = bundle.getString("id");
 
+
         // getting values from selected ListItem
         String aid = id_agente;
 
@@ -263,42 +278,63 @@ public class BaseAgenteActivity extends Activity
                 startActivity(i_7);
                 break;
             case 9:
+// get user data from session
+                HashMap<String, String> user = session.getUserDetails();
+                // name
+                name_user = user.get(SessionManager.KEY_NAME);
+                // email
+                code_user = user.get(SessionManager.KEY_USER);
+                // id
+                user_id = user.get(SessionManager.KEY_ID_USER);
+                //Obteniendo Ubicacion
+                GPSTracker gps = new GPSTracker(MyActivity);
+                // Verificar si GPS esta habilitado
+                double latitude_close=0;
+                double longitude_close=0;
+                if(gps.canGetLocation()){
+                     latitude_close = gps.getLatitude();
+                     longitude_close = gps.getLongitude();
+                    //Toast toast = Toast.makeText(getApplicationContext(), "Lat: " + String.valueOf(latitude) + "Long: " + String.valueOf(longitude), Toast.LENGTH_SHORT);
+                    //toast.show();
+                }else{
+                    // Indicar al Usuario que Habilite su GPS
+                    gps.showSettingsAlert();
+                }
                // GlobalConstant.inicio = strDate;
                 Calendar c = Calendar.getInstance();
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 String strDate = sdf.format(c.getTime());
                 GlobalConstant.fin = strDate;
-
-
                 Log.i("INICIO", GlobalConstant.inicio);
                 Log.i("FIN", GlobalConstant.fin);
-
-
-                insertaTiemporAuditoria(id_agente, GlobalConstant.inicio, GlobalConstant.fin);
+                insertaTiemporAuditoria(user_id,id_agente, GlobalConstant.inicio, GlobalConstant.fin, GlobalConstant.longitude_open,GlobalConstant.latitude_open, longitude_close,latitude_close);
                 finish();
                 break;
-
-
 
             default:
                 break;
         }
     }
 
-    private void insertaTiemporAuditoria(String idAgent, String inicio, String fin) {
+    private void insertaTiemporAuditoria(String user_id,String idAgent, String inicio, String fin , double long_open ,double lat_open , double long_close, double lat_close ) {
         db = new DatabaseHelper(MyActivity);
         db.updateStatusAndFech(inicio,fin,idAgent);
 
-
         JSONObject params_pedido = new JSONObject();
         try {
+            params_pedido.put("user_id", user_id);
+            params_pedido.put("user_id", idAgent);
             params_pedido.put("agent_id", idAgent);
             params_pedido.put("inicio", inicio);
             params_pedido.put("fin", fin);
+            params_pedido.put("long_open", long_open);
+            params_pedido.put("lat_open", lat_open);
+            params_pedido.put("long_close", long_close);
+            params_pedido.put("lat_close", lat_close);
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
         JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST , "http://redagentesyglobalnet.com/updateStatusAgent" ,params_pedido,
                 new Response.Listener<JSONObject>()
                 {
@@ -314,19 +350,14 @@ public class BaseAgenteActivity extends Activity
 //
                                 Log.d("DATAAAA", response.toString());
                                 Toast.makeText(MyActivity, "Se actualizo su visita", Toast.LENGTH_LONG).show();
-
                                 finish();
-
                             } else {
-
                                 Toast.makeText(MyActivity, "No se ha podido enviar la información, intentelo mas tarde ",Toast.LENGTH_LONG).show();
                             }
                         } catch (JSONException e) {
                             Toast.makeText(MyActivity, "No se ha podido enviar la información, intentelo mas tarde ",Toast.LENGTH_LONG).show();
                             e.printStackTrace();
                         }
-
-
                     }
                 },
                 new Response.ErrorListener() {

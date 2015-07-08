@@ -1,5 +1,6 @@
 package com.dataservicios.redagenteglobalapp;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
@@ -25,6 +26,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.dataservicios.SQLite.DatabaseHelper;
+import com.dataservicios.librerias.GPSTracker;
 import com.dataservicios.librerias.GlobalConstant;
 import com.dataservicios.librerias.JSONParser;
 import com.dataservicios.librerias.SessionManager;
@@ -55,13 +57,11 @@ public class ListofAgentsFragment extends Fragment {
     // Progress Dialog
     private ProgressDialog pDialog;
     //ArrayList<HashMap<String, String>> agentesList;
-
-
     private List<Agentes> agentesList = new ArrayList<Agentes>();
     private List<Agentes> listadoAgentes = new ArrayList<Agentes>();
     private ListView listView;
     private AgentesAdapter adapter;
-
+    private Activity MyActivity ;
 
     // JSON Node names
     private static final String TAG_SUCCESS = "success";
@@ -100,6 +100,8 @@ public class ListofAgentsFragment extends Fragment {
         code_user = user.get(SessionManager.KEY_USER);
         // id
         id_user = user.get(SessionManager.KEY_ID_USER);
+
+
         return inflater.inflate(R.layout.fragment_list_of_agents, container, false);
     }
 
@@ -145,8 +147,6 @@ public class ListofAgentsFragment extends Fragment {
         }
         // Loading products in Background Thread
         // new LoadAllProducts().execute(search);
-
-
         // Get listview
         ListView listView = (ListView) getActivity().findViewById(R.id.list_items);
         // Get Edittex
@@ -155,7 +155,6 @@ public class ListofAgentsFragment extends Fragment {
         // launching Edit Product Screen
 
         adapter = new AgentesAdapter(getActivity(), agentesList);
-
         pDialog = new ProgressDialog(getActivity());
         pDialog.setMessage("Please wait...");
         pDialog.setCancelable(false);
@@ -168,15 +167,11 @@ public class ListofAgentsFragment extends Fragment {
             if (search == ""){
                 adapter = new AgentesAdapter(getActivity(), db.getAllAgents(Integer.valueOf(id_user)));
                 adapter.notifyDataSetChanged();
-
             } else {
                 //Log.i("SEARCH....","hay datos para Buscar");
-
                 adapter = new AgentesAdapter(getActivity(), db.getSearcAgents(Integer.valueOf(id_user),search));
                 adapter.notifyDataSetChanged();
             }
-
-
         }
 
        // listView.setAdapter(adapter);
@@ -187,12 +182,31 @@ public class ListofAgentsFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
 
+
+                //Obteniendo Ubicacion
+                GPSTracker gps = new GPSTracker(getActivity());
+                // Verificar si GPS esta habilitado
+                if(gps.canGetLocation()){
+                    double latitude = gps.getLatitude();
+                    double longitude = gps.getLongitude();
+                    GlobalConstant.latitude_open = latitude;
+                    GlobalConstant.longitude_open = longitude;
+                    //Toast toast = Toast.makeText(getApplicationContext(), "Lat: " + String.valueOf(latitude) + "Long: " + String.valueOf(longitude), Toast.LENGTH_SHORT);
+                    //toast.show();
+                }else{
+                    // Indicar al Usuario que Habilite su GPS
+                    gps.showSettingsAlert();
+                }
+
                 // getting values from selected ListItem
                 String aid = ((TextView) view.findViewById(R.id.id)).getText().toString();
+                String status = ((TextView) view.findViewById(R.id.tvEstatus)).getText().toString();
+                GlobalConstant.status = Integer.valueOf(status)  ;
                 // Starting new intent
                 Intent i = new Intent( getActivity() , AgenteDetailActivity.class);
                 Bundle bolsa = new Bundle();
                 bolsa.putString(TAG_ID, aid);
+                //bolsa.putString("status", status);
                 i.putExtras(bolsa);
                 startActivity(i);
             }
@@ -209,7 +223,6 @@ public class ListofAgentsFragment extends Fragment {
 //
 //            }
 //        });
-
 
         listView.setAdapter(adapter);
         search_edt.setOnEditorActionListener(new TextView.OnEditorActionListener() {

@@ -39,10 +39,10 @@ public class AgentesAdapter extends BaseAdapter {
     @Override
     public boolean isEnabled(int position) {
         // Deshabilitando los items del adptador segun el statu
-        if( agenteItems.get(position).getStatus()==1){
-            return false;
-
-        }
+//        if( agenteItems.get(position).getStatus()==1){
+//            return false;
+//
+//        }
         return true;
     }
 
@@ -77,7 +77,10 @@ public class AgentesAdapter extends BaseAdapter {
         TextView tvTienda = (TextView) convertView.findViewById(R.id.tienda);
         TextView tvDireccion = (TextView) convertView.findViewById(R.id.direccion);
         TextView tvIdAgente = (TextView) convertView.findViewById(R.id.id);
+        TextView tvEstatus = (TextView) convertView.findViewById(R.id.tvEstatus);
+        TextView tvVisita = (TextView) convertView.findViewById(R.id.visita);
         ImageView imgStatus = (ImageView) convertView.findViewById(R.id.imgStatus);
+
         // getting ruta data for the row
         Agentes m = agenteItems.get(position);
         // thumbnail image
@@ -89,13 +92,16 @@ public class AgentesAdapter extends BaseAdapter {
         tvDireccion.setText( m.getDireccion());
         // release year
         tvIdAgente.setText(String.valueOf(m.getId()) );
+        tvEstatus.setText(String.valueOf(m.getStatus()));
 
+        //tvVisita.setText(String.valueOf(m.getInicio()));
 
 
         if(m.getStatus()==0){
             imgStatus.setImageResource(R.drawable.ic_check_off);
             //convertView.setBackgroundColor(Color.BLUE);
         } else if(m.getStatus()==1){
+            tvVisita.setText("Visita: "+String.valueOf(m.getInicio()));
             imgStatus.setImageResource(R.drawable.ic_check_on);
             //convertView.setBackgroundColor(Color.CYAN);
         }

@@ -407,7 +407,6 @@ public class Padidos extends Activity {
 //
 //            AppController.getInstance().addToRequestQueue(jsObjRequest);
         }
-
     }
 
     //Lllenado spiner tipo pedido
@@ -466,8 +465,6 @@ public class Padidos extends Activity {
         spPE.setAdapter(spinnerAdapter);
     }
 
-
-
    private void enviarPedido(){
 
        showpDialog();
@@ -496,8 +493,6 @@ public class Padidos extends Activity {
            params_pedido.put("state", valor);
            params_pedido.put("comentario",comentario);
 
-
-
        } catch (JSONException e) {
            e.printStackTrace();
        }
@@ -514,7 +509,6 @@ public class Padidos extends Activity {
                            //String agente = response.getString("agentes");
                            int success =  response.getInt("success");
                            if (success == 1) {
-//
                                Log.d("DATAAAA", response.toString());
                                Toast.makeText(MyActivity, "Se  envió correctamente su pedido",Toast.LENGTH_LONG).show();
                                String aid = String.valueOf(idAgente) ;
@@ -525,9 +519,7 @@ public class Padidos extends Activity {
                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                startActivity(intent);
                                finish();
-
                            } else {
-
                                Toast.makeText(MyActivity, "No se ha podido enviar la información, intentelo mas tarde ",Toast.LENGTH_LONG).show();
                            }
                        } catch (JSONException e) {

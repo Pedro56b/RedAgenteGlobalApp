@@ -48,14 +48,29 @@
                             android:id="@+id/tienda"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Tienda:" />
+                            android:text="Comercio:" />
                         <TextView
                             android:id="@+id/tienda_detail"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
                     </TableRow>
                     <TableRow
-                        android:id="@+id/widget112"
+                        android:id="@+id/widget113"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/ruc"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Ruc:     " />
+                        <TextView
+                            android:id="@+id/ruc_detail"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </TableRow>
+                    <TableRow
+                        android:id="@+id/widget114"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
@@ -69,23 +84,71 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
                     </TableRow>
+
                     <TableRow
-                        android:id="@+id/widget113"
+                        android:id="@+id/widget115"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
                         <TextView
-                            android:id="@+id/representante"
+                            android:id="@+id/referencia"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Ruc:     " />
+                            android:text="Referencia:" />
                         <TextView
-                            android:id="@+id/representante_detail"
+                            android:id="@+id/referencia_detail"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/widget116"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/distrito"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Distrito:" />
+                        <TextView
+                            android:id="@+id/distrito_detail"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
                     </TableRow>
                     <TableRow
-                        android:id="@+id/widget114"
+                        android:id="@+id/widget117"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/departamento"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Departamento:" />
+                        <TextView
+                            android:id="@+id/departamento_detail"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/widget119"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/contacto"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Contácto:" />
+                        <TextView
+                            android:id="@+id/contacto_detail"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </TableRow>
+                    <TableRow
+                        android:id="@+id/widget118"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
@@ -99,50 +162,55 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
                     </TableRow>
-                    <TableRow
-                        android:id="@+id/widget115"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:id="@+id/latitud"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Latitud:" />
-                        <TextView
-                            android:id="@+id/latitud_detail"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-                    </TableRow>
-                    <TableRow
-                        android:id="@+id/widget116"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:id="@+id/longitud"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Longitud:" />
-                        <TextView
-                            android:id="@+id/longitud_detail"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-                    </TableRow>
+
                 </TableLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_alignParentStart="false"
+                android:layout_alignParentEnd="false"
 
-                <Button
-                    android:id="@+id/btn_edit_agente"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-
-                    android:drawableTop="@drawable/ic_editar"
-                    android:layout_below="@+id/widget110"
-                    android:background="@android:color/transparent"
+                android:layout_alignTop="@+id/mapview_detail">
 
 
-                    android:layout_gravity="right" />
 
+                        <Button
+                            android:id="@+id/btn_detalle_message"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:drawableTop="@drawable/ic_detalle_message"
+                            android:layout_below="@+id/widget110"
+                            android:background="@android:color/transparent"
+
+
+                            android:layout_gravity="left" />
+
+                        <Button
+                            android:id="@+id/btn_detalle_phono"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:drawableTop="@drawable/ic_detalle_phono"
+                            android:layout_below="@+id/widget110"
+                            android:background="@android:color/transparent"
+
+
+                            android:layout_gravity="left" />
+
+                        <Button
+                            android:id="@+id/btn_edit_agente"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:drawableTop="@drawable/ic_editar"
+                            android:layout_below="@+id/widget110"
+                            android:background="@android:color/transparent"
+
+
+                            android:layout_gravity="right" />
+                </LinearLayout>
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="fill_parent"

@@ -25,12 +25,14 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.dataservicios.librerias.SessionManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Calendar;
+import java.util.HashMap;
 
 import app.AppController;
 
@@ -54,6 +56,12 @@ public class ChecklistActivity extends Activity {
     private ProgressDialog pDialog;
     private JSONObject params, paramsdata;
     Spinner spn_tipo;
+
+    private Activity MyActivity ;
+
+    private SessionManager session;
+    private String code_user, id_user, name_user;
+
 
     private AlertDialog.Builder builder;
 
@@ -85,6 +93,17 @@ public class ChecklistActivity extends Activity {
             e.printStackTrace();
         }
         cargarContactos();
+
+        MyActivity = (Activity) this;
+        session = new SessionManager(MyActivity);
+        // get user data from session
+        HashMap<String, String> user = session.getUserDetails();
+        // name
+        name_user = user.get(SessionManager.KEY_NAME);
+        // email
+        code_user = user.get(SessionManager.KEY_USER);
+        // id
+        id_user = user.get(SessionManager.KEY_ID_USER);
 
         //Get Spinner
         spn_tipo = (Spinner) findViewById(R.id.spContacto);
@@ -207,6 +226,7 @@ public class ChecklistActivity extends Activity {
                                         fact_pend_val = 1;
                                     else
                                         fact_pend_val = 0;
+                                        params.put("id_user", id_user );
                                         params.put("id_agente", id_agente );
                                         params.put("fec_desc", fechaEditText.getText() );
                                         params.put("hor_desc", horaEditText.getText() );

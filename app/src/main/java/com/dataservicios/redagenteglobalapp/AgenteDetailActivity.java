@@ -81,9 +81,9 @@ public class AgenteDetailActivity extends BaseAgenteActivity {
     // Progress Dialog
     private ProgressDialog pDialog;
     // single product url
-    private static final String url_agente_detials = "http://redagentesyglobalnet.com/JsonAgentDetail";
+    private static final String url_agente_detials = GlobalConstant.DOMINIO + "/JsonAgentDetail";
     // single product edit url
-    private static final String url_update_agente = "http://redagentesyglobalnet.com/updatePositionAgent";
+    private static final String url_update_agente =  GlobalConstant.DOMINIO + "/updatePositionAgent";
 
     ImageLoader imageLoader = AppController.getInstance().getImageLoader();
 
@@ -97,13 +97,17 @@ public class AgenteDetailActivity extends BaseAgenteActivity {
     private static final String TAG_TELEFONO = "telefono";
     private static final String TAG_LATITUD = "latitud";
     private static final String TAG_LONGITUD = "longitud";
+    private Integer status;
 
     private JSONObject params;
 
     TextView txt_tienda_detail;
     TextView txt_direccion_detail;
-    TextView txt_representante_detail;
+    TextView txt_ruc_detail;
     TextView txt_telefono_detail;
+    TextView txt_referencia_detail;
+    TextView txt_distrito_detail;
+    TextView txt_departamento_detail;
     TextView txt_latitud_detail;
     TextView txt_longitud_detail;
     TextView txt_id;
@@ -125,6 +129,8 @@ public class AgenteDetailActivity extends BaseAgenteActivity {
         try {
             Bundle bundle = getIntent().getExtras();
             String id_agente = bundle.getString(TAG_ID);
+            //status = Integer.valueOf(bundle.getString("status")) ;
+
 
             pDialog = new ProgressDialog(this);
             pDialog.setMessage("Please wait...");
@@ -133,10 +139,13 @@ public class AgenteDetailActivity extends BaseAgenteActivity {
             // EditText Text
             txt_tienda_detail = (TextView) findViewById(R.id.tienda_detail);
             txt_direccion_detail = (TextView) findViewById(R.id.direccion_detail);
-            txt_representante_detail = (TextView) findViewById(R.id.representante_detail);
+            txt_ruc_detail = (TextView) findViewById(R.id.ruc_detail);
             txt_telefono_detail = (TextView) findViewById(R.id.telefono_detail);
-            txt_latitud_detail = (TextView) findViewById(R.id.latitud_detail);
-            txt_longitud_detail = (TextView) findViewById(R.id.longitud_detail);
+//            txt_latitud_detail = (TextView) findViewById(R.id.latitud_detail);
+//            txt_longitud_detail = (TextView) findViewById(R.id.longitud_detail);
+             txt_referencia_detail =(TextView) findViewById(R.id.referencia_detail);
+            txt_distrito_detail=(TextView) findViewById(R.id.distrito_detail);
+            txt_departamento_detail=(TextView) findViewById(R.id.departamento_detail);
             txt_id = (TextView) findViewById(R.id.id_detail);
 
             Button gps_button = (Button) findViewById(R.id.btn_gps);
@@ -144,6 +153,8 @@ public class AgenteDetailActivity extends BaseAgenteActivity {
             Button pedido_button = (Button) findViewById(R.id.btn_pedido);
             Button reclamo_button = (Button) findViewById(R.id.btn_reclamo);
             Button edit_button = (Button) findViewById(R.id.btn_edit_agente);
+            Button phono_button = (Button) findViewById(R.id.btn_detalle_phono);
+            Button message_button = (Button) findViewById(R.id.btn_detalle_message);
             /*
             // thumbnail image
             thumbNail_1.setImageUrl("http://localhost:8080/redagenteglobalapp/images/agentes/000001-Agente_foto_20150208_002512", imageLoader);
@@ -152,6 +163,18 @@ public class AgenteDetailActivity extends BaseAgenteActivity {
             // thumbnail image
             thumbNail_3.setImageUrl("http://localhost:8080/redagenteglobalapp/images/agentes/000001-Agente_foto_20150208_005140.jpg", imageLoader);
             */
+
+            if(GlobalConstant.status==1){
+                 gps_button.setEnabled(false);
+                 photo_button.setEnabled(false);
+                pedido_button.setEnabled(false);
+                reclamo_button.setEnabled(false);
+                edit_button.setEnabled(false);
+
+            }
+            //phono_button.setEnabled(false);
+           // message_button.setEnabled(false);
+
 
             edit_button.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
@@ -166,6 +189,25 @@ public class AgenteDetailActivity extends BaseAgenteActivity {
                     bolsa.putString(TAG_ID, aid);
                     i.putExtras(bolsa);
                     startActivity(i);
+                }
+            });
+
+            phono_button.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Log.i("Make call", "");
+                    Intent phoneIntent = new Intent(Intent.ACTION_DIAL);
+                    phoneIntent.setData(Uri.parse("tel:" + txt_telefono_detail.getText()));
+                    startActivity(phoneIntent);
+                }
+            });
+
+            message_button.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Log.i("Make call", "");
+                    Intent phoneIntent = new Intent(Intent.ACTION_VIEW);
+                    phoneIntent.setData(Uri.parse("sms:" + txt_telefono_detail.getText()));
+                    startActivity(phoneIntent);
+                    //startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("sms:" + txt_telefono_detail.getText())));
                 }
             });
 
@@ -254,7 +296,7 @@ public class AgenteDetailActivity extends BaseAgenteActivity {
             // googleMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
             // googleMap.setMapType(GoogleMap.MAP_TYPE_NONE);
             // Showing / hiding your current location
-            map.setMyLocationEnabled(false);
+            map.setMyLocationEnabled(true);
             // Enable / Disable zooming controls
             map.getUiSettings().setZoomControlsEnabled(true);
             // Enable / Disable my location button
@@ -310,8 +352,8 @@ public class AgenteDetailActivity extends BaseAgenteActivity {
             double latitude = gps.getLatitude();
             double longitude = gps.getLongitude();
             map.clear();
-            txt_latitud_detail.setText(latitude+"");
-            txt_longitud_detail.setText(longitude+"");
+            //txt_latitud_detail.setText(latitude+"");
+            //txt_longitud_detail.setText(longitude+"");
             LatLng agente_latlng = new LatLng(latitude,longitude) ;
             //Añade el marker al mapa
             Marker agente_marker = map.addMarker(new MarkerOptions()
@@ -321,6 +363,7 @@ public class AgenteDetailActivity extends BaseAgenteActivity {
                     .snippet(txt_direccion_detail.getText().toString()));
 
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(agente_latlng, 15));
+            map.setMyLocationEnabled(true);
             //Mostrando información del Market ni bien carga el mapa
             agente_marker.showInfoWindow();
 
@@ -424,10 +467,15 @@ public class AgenteDetailActivity extends BaseAgenteActivity {
                                 txt_id.setText(obj.getString(TAG_ID));
                                 txt_tienda_detail.setText(obj.getString(TAG_TIENDA));
                                 txt_direccion_detail.setText(obj.getString(TAG_DIRECCION));
-                                txt_representante_detail.setText(obj.getString("ruc"));
+                                txt_ruc_detail.setText(obj.getString("ruc"));
+
+                                txt_referencia_detail.setText(obj.getString("referencia"));
+                                txt_distrito_detail.setText(obj.getString("distrito"));
+                                txt_departamento_detail.setText(obj.getString("departamento"));
+
                                 txt_telefono_detail.setText(obj.getString("telefono"));
-                                txt_latitud_detail.setText(obj.getString("latitud"));
-                                txt_longitud_detail.setText(obj.getString("longitud"));
+                                //txt_latitud_detail.setText(obj.getString("latitud"));
+                                //txt_longitud_detail.setText(obj.getString("longitud"));
 
                                 Double latitud;
                                 Double longitud;
