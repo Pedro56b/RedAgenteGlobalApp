@@ -210,7 +210,17 @@
 
 
                             android:layout_gravity="right" />
-                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btn_contacts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableTop="@drawable/ic_editar"
+                    android:layout_below="@+id/widget110"
+                    android:background="@android:color/transparent"
+                    android:layout_gravity="right" />
+
+            </LinearLayout>
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="fill_parent"

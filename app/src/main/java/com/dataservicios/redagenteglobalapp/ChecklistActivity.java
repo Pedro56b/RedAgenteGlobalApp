@@ -46,8 +46,10 @@ import app.AppController;
 public class ChecklistActivity extends Activity {
 
     EditText fechaEditText, horaEditText, extEditText, intEditText, otroagenteEditText, factEditText, tiendafrecEditText, derivEditText, relevEditText;
+    EditText posEditText, recEditText, servEditText, contEditText, tarifEditText, bimEditText, fbimEditText, atenEditText, segEditText;
     Spinner contactoSpinner;
     Switch extSwitch, intSwitch, otroagenteSwitch, factSwitch;
+    Switch posSwitch, reclSwitch, servSwitch, contSwitch, tarifSwitch, bimSwitch, fbimSwitch, atenSwitch;
     Button guardarchecklistButton;
     RadioGroup tiporadioGroup;
     RadioButton derivacionButton, influenciaButton, periferiaButton;
@@ -65,7 +67,8 @@ public class ChecklistActivity extends Activity {
 
     private AlertDialog.Builder builder;
 
-    private static String url_nuevo_checklist = "http://redagentesyglobalnet.com/insertJsonCheck";
+    //private static String url_nuevo_checklist = "http://redagentesyglobalnet.com/insertJsonCheck";
+    private static String url_nuevo_checklist = "http://192.168.0.101:8080/json_prueba.php";
     private static String url_get_contactos = "http://redagentesyglobalnet.com/JsonContactsAgent";
 
     public ChecklistActivity() {
@@ -118,11 +121,28 @@ public class ChecklistActivity extends Activity {
         tiendafrecEditText = (EditText) findViewById(R.id.edttiendafrec);
         derivEditText = (EditText) findViewById(R.id.edtderiv);
         relevEditText = (EditText) findViewById(R.id.edtrelev);
+        posEditText = (EditText) findViewById(R.id.edtpos);
+        recEditText = (EditText) findViewById(R.id.edtrecl);
+        servEditText = (EditText) findViewById(R.id.edtserv);
+        contEditText = (EditText) findViewById(R.id.edtcont);
+        tarifEditText = (EditText) findViewById(R.id.edttarif);
+        bimEditText = (EditText) findViewById(R.id.edtbim);
+        fbimEditText = (EditText) findViewById(R.id.edtfbim);
+        atenEditText = (EditText) findViewById(R.id.edtaten);
+        segEditText = (EditText) findViewById(R.id.edtSegmento);
         contactoSpinner = (Spinner) findViewById(R.id.spContacto);
         extSwitch = (Switch) findViewById(R.id.swExt);
         intSwitch = (Switch) findViewById(R.id.swInt);
         otroagenteSwitch = (Switch) findViewById(R.id.swotroagente);
         factSwitch = (Switch) findViewById(R.id.swfact);
+        posSwitch = (Switch) findViewById(R.id.swpos);
+        reclSwitch = (Switch) findViewById(R.id.swrecl);
+        servSwitch = (Switch) findViewById(R.id.swserv);
+        contSwitch = (Switch) findViewById(R.id.swcont);
+        tarifSwitch = (Switch) findViewById(R.id.swtarif);
+        bimSwitch = (Switch) findViewById(R.id.swbim);
+        fbimSwitch = (Switch) findViewById(R.id.swfbim);
+        atenSwitch = (Switch) findViewById(R.id.swaten);
         guardarchecklistButton = (Button) findViewById(R.id.btGuardarChecklist);
         tiporadioGroup = (RadioGroup) findViewById(R.id.tipogrupo);
         derivacionButton = (RadioButton) findViewById(R.id.Btnderivacion);
@@ -195,7 +215,7 @@ public class ChecklistActivity extends Activity {
 
                                 try {
 
-                                    int selectedId,tipo_agente,ext_val,int_val,otro_agente_val, fact_pend_val ;
+                                    int selectedId,tipo_agente,ext_val,int_val,otro_agente_val, fact_pend_val, pos_val, recl_val, serv_val, cont_val, tarif_val, bim_val, fbim_val, aten_val ;
 
                                     selectedId = tiporadioGroup.getCheckedRadioButtonId();
                                     if(selectedId == derivacionButton.getId()) {
@@ -226,23 +246,85 @@ public class ChecklistActivity extends Activity {
                                         fact_pend_val = 1;
                                     else
                                         fact_pend_val = 0;
-                                        params.put("id_user", id_user );
-                                        params.put("id_agente", id_agente );
-                                        params.put("fec_desc", fechaEditText.getText() );
-                                        params.put("hor_desc", horaEditText.getText() );
-                                        params.put("ext_desc", extEditText.getText() );
-                                        params.put("int_desc", intEditText.getText() );
-                                        params.put("otro_agente_desc", otroagenteEditText.getText() );
-                                        params.put("fact_pend_desc", factEditText.getText()  );
-                                        params.put("tienda_frec_desc", tiendafrecEditText.getText()  );
-                                        params.put("tipo_agente_desc", derivEditText.getText() );
-                                        params.put("datos_relev", relevEditText.getText() );
-                                        params.put("contacto_id", contacto_ids[contactoSpinner.getSelectedItemPosition()]  );
-                                        params.put("ext_val",  ext_val   );
-                                        params.put("int_val",   int_val  );
-                                        params.put("otro_agente_val",  otro_agente_val   );
-                                        params.put("fact_pend_val",  fact_pend_val   );
-                                        params.put("tipo_agente_val", tipo_agente  );
+
+                                    if (posSwitch.isChecked())
+                                        pos_val = 1;
+                                    else
+                                        pos_val = 0;
+
+                                    if (reclSwitch.isChecked())
+                                        recl_val = 1;
+                                    else
+                                        recl_val = 0;
+
+                                    if (servSwitch.isChecked())
+                                        serv_val = 1;
+                                    else
+                                        serv_val = 0;
+
+                                    if (contSwitch.isChecked())
+                                        cont_val = 1;
+                                    else
+                                        cont_val = 0;
+
+                                    if (tarifSwitch.isChecked())
+                                        tarif_val = 1;
+                                    else
+                                        tarif_val = 0;
+
+                                    if (bimSwitch.isChecked())
+                                        bim_val = 1;
+                                    else
+                                        bim_val = 0;
+
+                                    if (fbimSwitch.isChecked())
+                                        fbim_val = 1;
+                                    else
+                                        fbim_val = 0;
+
+                                    if (atenSwitch.isChecked())
+                                        aten_val = 1;
+                                    else
+                                        aten_val = 0;
+
+                                    params.put("id_user", id_user );
+                                    params.put("id_agente", id_agente );
+                                    params.put("fec_desc", fechaEditText.getText() );
+                                    params.put("hor_desc", horaEditText.getText() );
+                                    params.put("seg_desc", segEditText.getText() );
+                                    params.put("ext_desc", extEditText.getText() );
+                                    params.put("int_desc", intEditText.getText() );
+                                    params.put("otro_agente_desc", otroagenteEditText.getText() );
+                                    params.put("fact_pend_desc", factEditText.getText()  );
+                                    params.put("tienda_frec_desc", tiendafrecEditText.getText()  );
+                                    params.put("tipo_agente_desc", derivEditText.getText() );
+                                    params.put("datos_relev", relevEditText.getText() );
+                                    params.put( "pos_desc" , posEditText.getText()  );
+                                    params.put( "rec_desc" , recEditText.getText()  );
+                                    params.put( "serv_desc" , servEditText.getText()  );
+                                    params.put( "cont_desc" , contEditText.getText()  );
+                                    params.put( "tarif_desc" , tarifEditText.getText()  );
+                                    params.put( "bim_desc" , bimEditText.getText()  );
+                                    params.put( "fbim_desc" , fbimEditText.getText()  );
+                                    params.put( "aten_desc" , atenEditText.getText()  );
+                                    params.put("contacto_id", contacto_ids[contactoSpinner.getSelectedItemPosition()]  );
+                                    params.put("ext_val",  ext_val   );
+                                    params.put("int_val",   int_val  );
+                                    params.put("otro_agente_val",  otro_agente_val   );
+                                    params.put("fact_pend_val",  fact_pend_val   );
+                                    params.put("pos_val", pos_val ) ;
+                                    params.put("recl_val", recl_val ) ;
+                                    params.put("serv_val", serv_val ) ;
+                                    params.put("cont_val", cont_val ) ;
+                                    params.put("tarif_val", tarif_val ) ;
+                                    params.put("bim_val", bim_val ) ;
+                                    params.put("fbim_val", fbim_val ) ;
+                                    params.put("aten_val", aten_val ) ;
+                                    params.put("tipo_agente_val", tipo_agente  );
+
+
+
+                                Log.d("params", params.toString());
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }

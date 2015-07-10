@@ -155,6 +155,7 @@ public class AgenteDetailActivity extends BaseAgenteActivity {
             Button edit_button = (Button) findViewById(R.id.btn_edit_agente);
             Button phono_button = (Button) findViewById(R.id.btn_detalle_phono);
             Button message_button = (Button) findViewById(R.id.btn_detalle_message);
+            Button contacts_button = (Button) findViewById(R.id.btn_contacts);
             /*
             // thumbnail image
             thumbNail_1.setImageUrl("http://localhost:8080/redagenteglobalapp/images/agentes/000001-Agente_foto_20150208_002512", imageLoader);
@@ -168,6 +169,7 @@ public class AgenteDetailActivity extends BaseAgenteActivity {
                  gps_button.setEnabled(false);
                  photo_button.setEnabled(false);
                 pedido_button.setEnabled(false);
+                contacts_button.setEnabled(false);
                 reclamo_button.setEnabled(false);
                 edit_button.setEnabled(false);
 
@@ -191,6 +193,24 @@ public class AgenteDetailActivity extends BaseAgenteActivity {
                     startActivity(i);
                 }
             });
+
+            contacts_button.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Bundle bundle = getIntent().getExtras();
+                    String id_agente = bundle.getString(TAG_ID);
+
+                    // getting values from selected ListItem
+                    String aid = id_agente;
+                    // Starting new intent
+                    Intent i = new Intent( AgenteDetailActivity.this , ListaContactos.class);
+                    Bundle bolsa = new Bundle();
+                    bolsa.putString(TAG_ID, aid);
+                    i.putExtras(bolsa);
+                    startActivity(i);
+                }
+            });
+
+
 
             phono_button.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {

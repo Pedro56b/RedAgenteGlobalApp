@@ -161,11 +161,42 @@
         </activity>
 
         <activity
+            android:name="com.dataservicios.redagenteglobalapp.NewContactoActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeAdminPanel">
+            <intent-filter>
+                <action android:name="com.dataservicios.redagenteglobalapp.NewContactoAcivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.dataservicios.redagenteglobalapp.EditContactoActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeAdminPanel">
+            <intent-filter>
+                <action android:name="com.dataservicios.redagenteglobalapp.EditContactoActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
             android:name="com.dataservicios.redagenteglobalapp.ListaPedido"
 
             android:theme="@style/AppThemeAdminPanel">
             <intent-filter>
                 <action android:name="com.dataservicios.redagenteglobalapp.LISTAPEDIDO" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+
+        <activity
+            android:name="com.dataservicios.redagenteglobalapp.ListaContactos"
+
+            android:theme="@style/AppThemeAdminPanel">
+            <intent-filter>
+                <action android:name="com.dataservicios.redagenteglobalapp.LISTACONTACTOS" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
