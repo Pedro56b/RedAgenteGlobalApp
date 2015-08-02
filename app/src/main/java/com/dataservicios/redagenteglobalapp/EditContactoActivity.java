@@ -16,6 +16,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.dataservicios.librerias.GlobalConstant;
 import com.dataservicios.librerias.SessionManager;
 
 import org.json.JSONException;
@@ -39,8 +40,8 @@ public class EditContactoActivity extends Activity{
     private String code_user, id_user, name_user;
     private AlertDialog.Builder builder;
 
-    private static String url_editar_contacto = "http://192.168.0.101:8080/json_prueba.php";
-    private static String url_eliminar_contacto = "http://192.168.0.101:8080/json_prueba.php";
+    private static String url_editar_contacto =  GlobalConstant.DOMINIO +  "/updateContactAgent";
+    private static String url_eliminar_contacto = GlobalConstant.DOMINIO +  "/deleteContactAgent";
 
 
 

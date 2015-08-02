@@ -98,6 +98,7 @@ public class AgentesAdapter extends BaseAdapter {
 
 
         if(m.getStatus()==0){
+            tvVisita.setText("");
             imgStatus.setImageResource(R.drawable.ic_check_off);
             //convertView.setBackgroundColor(Color.BLUE);
         } else if(m.getStatus()==1){

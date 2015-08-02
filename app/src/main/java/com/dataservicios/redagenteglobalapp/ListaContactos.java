@@ -42,7 +42,7 @@ public class ListaContactos extends Activity {
 
     private int idAgente;
 
-    private static String url_get_contactos = "http://redagentesyglobalnet.com/JsonContactsAgent";
+    private static String url_get_contactos = GlobalConstant.DOMINIO + "/JsonContactsAgent";
 
     private ProgressDialog pDialog;
     private List<Contacto> contactosList = new ArrayList<Contacto>();

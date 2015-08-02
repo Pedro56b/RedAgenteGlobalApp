@@ -17,6 +17,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.dataservicios.librerias.GlobalConstant;
 import com.dataservicios.librerias.SessionManager;
 
 import org.json.JSONException;
@@ -39,7 +40,7 @@ public class NewContactoActivity extends Activity {
     private String code_user, id_user, name_user;
     private AlertDialog.Builder builder;
 
-    private static String url_nuevo_contacto = "http://192.168.0.101:8080/json_prueba.php";
+    private static String url_nuevo_contacto = GlobalConstant.DOMINIO + "/insertNewContactAgent";
 
 
 
@@ -67,7 +68,7 @@ public class NewContactoActivity extends Activity {
         // Get Inputs
         edt_celular = (EditText) findViewById(R.id.edtcelular);
         edt_contacto =(EditText) findViewById(R.id.edtcontacto);
-        edt_email = (EditText) findViewById(R.id.edtcontacto);
+        edt_email = (EditText) findViewById(R.id.edtemail);
 
 
         btn_guardar_contacto.setOnClickListener(new View.OnClickListener() {

@@ -72,7 +72,7 @@ public class ListofAgentsFragment extends Fragment {
     private static final String TAG_STATUS = "status";
     private static final String TAG_INICIO = "inicio";
     private static final String TAG_FIN = "fin";
-    private static String url_all_agentes = "http://redagentesyglobalnet.com/JsonAgentList";
+    private static String url_all_agentes = GlobalConstant.DOMINIO + "/JsonAgentList";
     private SessionManager session;
     private String code_user, id_user, name_user;
     private String idtienda;
