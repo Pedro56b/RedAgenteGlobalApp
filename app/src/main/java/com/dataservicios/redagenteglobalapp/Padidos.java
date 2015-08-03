@@ -49,7 +49,9 @@ public class Padidos extends Activity {
     private SessionManager session;
     private String code_user, id_user, name_user;
     private String array_spinner_tipo[];
-    private Spinner spTipo, spPrducto, spPE;
+    private Spinner spTipo, spPrducto, spDir;
+    private String array_spinner[], dir_ids[];
+
 
     private ProgressDialog pDialog;
     private JSONObject params;
@@ -63,6 +65,9 @@ public class Padidos extends Activity {
     private EditText etComent;
     private int idTipo, idProducto, idPE ,idAgente;
     private String valor , comentario;
+
+
+    private static String url_get_dirs  = "http://redagentesyglobalnet.com/JsonDirsAgent";
 
     private DatabaseHelper db;
 
@@ -93,8 +98,8 @@ public class Padidos extends Activity {
         idAgente = Integer.valueOf(bundle.getString("id")) ;
 
         spTipo = (Spinner) findViewById(R.id.spTipo);
+        spDir = (Spinner) findViewById(R.id.spDir);
         spPrducto = (Spinner) findViewById(R.id.spProducto);
-        spPE = (Spinner) findViewById(R.id.spPE);
         btEnviar = (Button) findViewById(R.id.btEnviar);
         rgTipo = (RadioGroup) findViewById(R.id.rgTipo);
         rbNuevo = (RadioButton)findViewById(R.id.rbNuevo);
@@ -113,11 +118,19 @@ public class Padidos extends Activity {
 //        spPE.setClickable(false);
 
 
-
         //Ventana de de carga----------------------
         pDialog = new ProgressDialog(this);
         pDialog.setMessage("Cargando...");
         pDialog.setCancelable(false);
+
+        params = new JSONObject();
+        try {
+            params.put("agent_id", idAgente);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        cargaDirs();
+
 
 
         params = new JSONObject();
@@ -174,29 +187,6 @@ public class Padidos extends Activity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                try {
-                    cargaProductoEspecifico(paramsTipo);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        spPE.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String label = parent.getItemAtPosition(position).toString();
-                int b=tipoPEList.get(position).getId();
-                idPE = b;
-                String d=String.valueOf(b);
-                // Showing selected spinner item
-               // Toast.makeText(parent.getContext(), "Ide Selecionado: " + label + " ID: " + d, Toast.LENGTH_LONG).show();
-                //enabledControl();
 
             }
 
@@ -340,74 +330,58 @@ public class Padidos extends Activity {
 
     }
 
-    private void cargaProductoEspecifico(JSONObject paramsTipo) throws JSONException {
 
-        int idProducto = paramsTipo.getInt("id");
-        if(idProducto == 10){
-            tipoPEList.clear();
-            poblandoSpinnerProductoEspecifico();
-            //rgTipo.setClickable(false);
-            disableControl();
-        } else {
-            //showpDialog();
-//            tipoPEList.add(producto);
-//            tipoPedidoList=db.getAllPedidos();
-            tipoPEList = db.getAllPublicidadDetalle(idProducto);
-            poblandoSpinnerProductoEspecifico();
+    private void cargaDirs() {
 
-//            JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST , "http://redagentesyglobalnet.com/JsonPublicitiesDetail" , paramsTipo,
-//                    new Response.Listener<JSONObject>()
-//                    {
-//                        @Override
-//                        public void onResponse(JSONObject response)
-//                        {
-//                            Log.d("DATAAAA", response.toString());
-//                            //adapter.notifyDataSetChanged();
-//                            try {
-//                                //String agente = response.getString("agentes");
-//                                int success =  response.getInt("success");
-//                                if (success == 1) {
-//                                    JSONArray ObjJson;
-//                                    ObjJson = response.getJSONArray("publicities_details");
-//
-//                                    tipoPEList.clear();
-//                                    if(ObjJson.length() > 0) {
-//                                        for (int i = 0; i < ObjJson.length(); i++) {
-//                                            try {
-//                                                JSONObject obj = ObjJson.getJSONObject(i);
-//                                                Producto producto = new Producto();
-//                                                producto.setId(Integer.valueOf(obj.getString("id")));
-//                                                producto.setNombre(obj.getString("fullname"));
-//                                                //pedido.setDescripcion(obj.getString("descripcion"));
-//                                                // adding movie to movies array
-//                                                tipoPEList.add(producto);
-//                                            } catch (JSONException e) {
-//                                                e.printStackTrace();
-//                                            }
-//                                        }
-//                                        poblandoSpinnerProductoEspecifico();
-//                                    }
-//
-//                                }
-//                            } catch (JSONException e) {
-//                                e.printStackTrace();
-//                            }
-//
-//                            hidepDialog();
-//                        }
-//                    },
-//                    new Response.ErrorListener() {
-//                        @Override
-//                        public void onErrorResponse(VolleyError error) {
-//                            //VolleyLog.d(TAG, "Error: " + error.getMessage());
-//                            hidepDialog();
-//                        }
-//                    }
-//            );
-//
-//            AppController.getInstance().addToRequestQueue(jsObjRequest);
-        }
+        showpDialog();
+
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST , url_get_dirs , params,
+                new Response.Listener<JSONObject>()
+                {
+                    @Override
+                    public void onResponse(JSONObject response)
+                    {
+                        Log.d("DATAAAA", response.toString());
+                        try {
+                            int success =  response.getInt("success");
+                            if (success == 1) {
+                                JSONArray agentesObjJson;
+                                agentesObjJson = response.getJSONArray("dirs");
+                                array_spinner=new String[agentesObjJson.length()];
+                                dir_ids =new String[agentesObjJson.length()];
+                                for (int i = 0; i < agentesObjJson.length(); i++) {
+                                    JSONObject obj = agentesObjJson.getJSONObject(i);
+                                    // Storing each json item in variable
+                                    array_spinner[i]= obj.getString("dir") ;
+                                    dir_ids[i] = obj.getString("dir");
+                                }
+
+                                Spinner s = (Spinner) findViewById(R.id.spDir);
+                                ArrayAdapter adapter = new ArrayAdapter(Padidos.this,
+                                        android.R.layout.simple_spinner_item, array_spinner);
+                                s.setAdapter(adapter);
+
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        hidePDialog();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        //VolleyLog.d(TAG, "Error: " + error.getMessage());
+                        hidePDialog();
+                    }
+                }
+        );
+
+        AppController.getInstance().addToRequestQueue(jsObjRequest);
     }
+
+
 
     //Lllenado spiner tipo pedido
     private void poblandoSpinnerTipoPedido() {
@@ -446,24 +420,6 @@ public class Padidos extends Activity {
         spPrducto.setAdapter(spinnerAdapter);
     }
     //Lllenado spiner tipo ProductoEspecifico
-    private void poblandoSpinnerProductoEspecifico() {
-
-        spPE.setAdapter(null);
-        List<String> lables = new ArrayList<String>();
-        //lables.add(tipoPedidoList.get(0).getTipo());
-        for (int i = 0; i < tipoPEList.size(); i++) {
-            lables.add(tipoPEList.get(i).getNombre());
-        }
-        // Creating adapter for spinner
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, lables);
-
-        // Drop down layout style - list view with radio button
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        // attaching data adapter to spinner
-
-        spPE.setAdapter(spinnerAdapter);
-    }
 
    private void enviarPedido(){
 
@@ -489,15 +445,18 @@ public class Padidos extends Activity {
            params_pedido.put("agent_id", idAgente);
            params_pedido.put("type_orders_id", idTipo);
            params_pedido.put("publicities_id", idProducto);
-           params_pedido.put("publicities_details_id", idPE);
+           params_pedido.put("dir", spDir.getSelectedItem());
            params_pedido.put("state", valor);
            params_pedido.put("comentario",comentario);
+
+           Log.d("params",params_pedido.toString());
+           Log.d("params",params_pedido.toString());
 
        } catch (JSONException e) {
            e.printStackTrace();
        }
 
-       JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST , "http://redagentesyglobalnet.com/updateJsonOrder" ,params_pedido,
+       JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST , "http://redagentesyglobalnet.com/insertJsonOrder" ,params_pedido,
                new Response.Listener<JSONObject>()
                {
                    @Override
@@ -595,5 +554,17 @@ public class Padidos extends Activity {
         rbRenovacion.setEnabled(false);
         rbRenovacion.setChecked(false);
         rbNuevo.setChecked(false);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        hidePDialog();
+    }
+
+
+    private void hidePDialog() {
+        if (pDialog.isShowing())
+            pDialog.dismiss();
     }
 }

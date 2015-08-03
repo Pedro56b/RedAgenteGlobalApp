@@ -64,10 +64,14 @@ public class ReclamosAdapter extends BaseAdapter {
         TextView tvIdReclamo = (TextView) convertView.findViewById(R.id.id);
         TextView tvTipo = (TextView) convertView.findViewById(R.id.tvTipo);
         TextView tvEstado = (TextView) convertView.findViewById(R.id.tvEstado);
+        TextView tvFecha = (TextView) convertView.findViewById(R.id.tvFecha);
+        TextView tvDir = (TextView) convertView.findViewById(R.id.tvDir);
         // getting ruta data for the row
         Reclamos m = reclamoItems.get(position);
         // rutaDia
         // release year
+        tvFecha.setText(Html.fromHtml("<b>Fecha: </b>")+String.valueOf(m.getFecha()));
+        tvDir.setText(Html.fromHtml("<b>Dir: </b>")+String.valueOf(m.getDir()));
         tvComentario.setText(Html.fromHtml("<b>Comentario: </b>")+String.valueOf(m.getComentario()));
         tvReclamo.setText(Html.fromHtml("<b>Reclamo: </b>")+String.valueOf(m.getReclamo()) );
         tvIdReclamo.setText(String.valueOf(m.getId()) );

@@ -154,6 +154,8 @@ public class ListofReclamosActivity extends Activity {
                                     reclamos.setId(Integer.valueOf(obj.getString("id")));
                                     reclamos.setReclamo(obj.getString("content"));
                                     reclamos.setTipo(obj.getString("Tipo"));
+                                    reclamos.setDir(obj.getString("dir"));
+                                    reclamos.setFecha(obj.getString("created_at"));
                                     reclamos.setEstado(obj.getString("state"));
                                     reclamos.setComentario(obj.getString("comment"));
                                     reclamosList.add(reclamos);

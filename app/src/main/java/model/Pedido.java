@@ -6,25 +6,25 @@ package model;
  */
 public class Pedido {
 
-    private String   Nombre, Tipo, Descripcion ,Publicidad ,PublicidadDetalle, Pedido, Estado, Fecha;
+    private String   Nombre, Tipo, Descripcion ,Publicidad ,PublicidadDetalle, Pedido, Estado, Fecha, Dir;
     private int  Id;
     //private ArrayList<String> genre;
 
     public Pedido() {
     }
 
-    public Pedido(String Tipo, String Descripcion , int Id , String Nombre, String Publicidad ,String PublicidadDetalle,String  Pedido, String Estado , String Fecha) {
+    public Pedido(String Tipo, String Dir, String Descripcion , int Id , String Nombre, String Publicidad ,String PublicidadDetalle,String  Pedido, String Estado , String Fecha) {
 
         this.Tipo = Tipo;
         this.Descripcion = Descripcion;
         this.Id= Id;
         this.Nombre = Nombre;
-
         this.Publicidad=Publicidad ;
         this.PublicidadDetalle =PublicidadDetalle;
         this.Pedido = Pedido ;
         this.Estado = Estado ;
         this.Fecha = Fecha ;
+        this.Dir = Dir;
 
     }
     public int getId() {
@@ -36,11 +36,11 @@ public class Pedido {
     }
 
     public String getNombre() {
-        return Descripcion;
+        return Nombre;
     }
 
     public void setNombre(String Nombre) {
-        this.Descripcion = Nombre;
+        this.Nombre = Nombre;
     }
 
     public String getDescripcion() {
@@ -73,6 +73,14 @@ public class Pedido {
 
     public void setPublicidadDetalle(String PublicidadDetalle) {
         this.PublicidadDetalle = PublicidadDetalle;
+    }
+
+    public String getDir() {
+        return Dir;
+    }
+
+    public void setDir(String Dir) {
+        this.Dir = Dir;
     }
 
     public String getPedido() {

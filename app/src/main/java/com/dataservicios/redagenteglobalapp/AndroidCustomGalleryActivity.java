@@ -243,6 +243,10 @@ public class AndroidCustomGalleryActivity extends Activity {
         int width = Math.round((float) ratio * realImage.getWidth());
         int height = Math.round((float) ratio * realImage.getHeight());
 
+
+
+
+
         Bitmap newBitmap = Bitmap.createScaledBitmap(realImage, width,
                 height, filter);
         return newBitmap;

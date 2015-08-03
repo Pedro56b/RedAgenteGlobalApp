@@ -72,39 +72,34 @@
                 android:background="@drawable/spiner"
                 />
         </LinearLayout>
+
+
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:padding="5dp">
-            <TextView
+            android:padding="5dp" >
 
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Producto Especifico: "
-
+                android:text="Dir:"
                 android:textSize="@dimen/general" />
-
-
-
-
         </LinearLayout>
+
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:padding="5dp">
+            android:padding="5dp" >
 
             <Spinner
                 android:layout_width="fill_parent"
                 android:layout_height="50dp"
-                android:id="@+id/spPE"
-
-                android:background="@drawable/spiner"
-                />
+                android:id="@+id/spDir"
+                android:background="@drawable/spiner" />
         </LinearLayout>
-
 
         <LinearLayout
             android:orientation="horizontal"

@@ -67,7 +67,7 @@ public class PedidoAdapter  extends BaseAdapter {
         TextView tvPedido = (TextView) convertView.findViewById(R.id.tvPedido);
 
         TextView tvEstado = (TextView) convertView.findViewById(R.id.tvEstado);
-        TextView tvPublicidadDetalle = (TextView) convertView.findViewById(R.id.tvPublicidadDetalle);
+        TextView tvDir = (TextView) convertView.findViewById(R.id.tvDir);
         TextView tvFecha = (TextView) convertView.findViewById(R.id.tvFechaHora);
 
         // getting ruta data for the row
@@ -77,14 +77,10 @@ public class PedidoAdapter  extends BaseAdapter {
         // rutaDia
         tvNombre.setText("Nombre: " + m.getNombre());
         tvTipo.setText("Tipo: " + m.getTipo());
-
-        // pdvs
         tvDescripcion.setText("Comentario: " +m.getDescripcion());
-
-        tvEstado.setText("Estado: " +m.getEstado());
         tvPedido.setText("Pedido: " +m.getPedido());
         tvPublicidad.setText("Publicidad: " +m.getPublicidad());
-        tvPublicidadDetalle.setText("Publicidad detalle: " +m.getPublicidadDetalle());
+        tvDir.setText("Dir: " +m.getDir());
         tvEstado.setText("Estado: " +m.getEstado());
         tvFecha.setText("Fecha: " +m.getFecha());
         // release year

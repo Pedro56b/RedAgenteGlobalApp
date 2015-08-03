@@ -46,10 +46,10 @@ import model.TipoReclamo;
 
 public class NewReclamoActivity extends Activity {
 
-    private String array_spinner[], tipo_ids[];
+    private String array_spinner[], dir_ids[];
     private ProgressDialog pDialog;
     private JSONObject params;
-    Spinner spn_tipo;
+    Spinner spn_tipo, spn_dir;
     Button btn_guardar_reclamo;
     EditText edt_comentario;
     private SessionManager session;
@@ -61,6 +61,7 @@ public class NewReclamoActivity extends Activity {
 
     private static String url_nuevo_reclamo = "http://redagentesyglobalnet.com/insertJsonClaim";
     private static String url_get_tipo_reclamos = "http://redagentesyglobalnet.com/JsonTipoReclamo";
+    private static String url_get_dirs  = "http://redagentesyglobalnet.com/JsonDirsAgent";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,10 +83,21 @@ public class NewReclamoActivity extends Activity {
         pDialog = new ProgressDialog(this);
         pDialog.setMessage("Please wait...");
         pDialog.setCancelable(false);
+
+        params = new JSONObject();
+        try {
+            Bundle bundle = getIntent().getExtras();
+            String id_agente = bundle.getString("id");
+            params.put("agent_id", id_agente);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        cargaDirs();
         cargaTipoReclamos();
 
         //Get Spinner
         spn_tipo = (Spinner) findViewById(R.id.spTipo);
+        spn_dir = (Spinner) findViewById(R.id.spDir);
 
         // Get Button
         btn_guardar_reclamo = (Button) findViewById(R.id.btGuardarReclamo);
@@ -117,6 +129,7 @@ public class NewReclamoActivity extends Activity {
                                     params.put("agent_id", id_agente);
                                     params.put("id",id_user);
                                     params.put("type_claims_id", tipoReclamoList.get(spn_tipo.getSelectedItemPosition()).getId() );
+                                    params.put("dir", spn_dir.getSelectedItem()  );
                                     params.put("comentario", edt_comentario.getText());
 
                                     Log.d("params", params.toString());
@@ -286,6 +299,57 @@ public class NewReclamoActivity extends Activity {
 //        );
 //
 //        AppController.getInstance().addToRequestQueue(jsObjRequest);
+    }
+
+
+    private void cargaDirs() {
+
+        showpDialog();
+
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST , url_get_dirs , params,
+                new Response.Listener<JSONObject>()
+                {
+                    @Override
+                    public void onResponse(JSONObject response)
+                    {
+                        Log.d("DATAAAA", response.toString());
+                        try {
+                            int success =  response.getInt("success");
+                            if (success == 1) {
+                                JSONArray agentesObjJson;
+                                agentesObjJson = response.getJSONArray("dirs");
+                                array_spinner=new String[agentesObjJson.length()];
+                                dir_ids =new String[agentesObjJson.length()];
+                                for (int i = 0; i < agentesObjJson.length(); i++) {
+                                    JSONObject obj = agentesObjJson.getJSONObject(i);
+                                    // Storing each json item in variable
+                                    array_spinner[i]= obj.getString("dir") ;
+                                    dir_ids[i] = obj.getString("dir");
+                                }
+
+                                Spinner s = (Spinner) findViewById(R.id.spDir);
+                                ArrayAdapter adapter = new ArrayAdapter(NewReclamoActivity.this,
+                                        android.R.layout.simple_spinner_item, array_spinner);
+                                s.setAdapter(adapter);
+
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        hidePDialog();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        //VolleyLog.d(TAG, "Error: " + error.getMessage());
+                        hidePDialog();
+                    }
+                }
+        );
+
+        AppController.getInstance().addToRequestQueue(jsObjRequest);
     }
 
 

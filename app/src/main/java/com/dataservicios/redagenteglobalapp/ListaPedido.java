@@ -152,8 +152,8 @@ public class ListaPedido extends Activity {
                                             pedido.setNombre(obj.getString("content"));
                                             pedido.setPedido(obj.getString("Pedido"));
                                             pedido.setPublicidado(obj.getString("Publicidad"));
+                                            pedido.setDir(obj.getString("dir"));
                                             pedido.setEstado(obj.getString("estado"));
-                                            pedido.setPublicidadDetalle(obj.getString("Publicidad_detalle"));
                                             pedido.setFecha(obj.getString("created_at"));
 
                                             // adding movie to movies array
