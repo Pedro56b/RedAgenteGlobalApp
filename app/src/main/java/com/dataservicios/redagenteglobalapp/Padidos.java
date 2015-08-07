@@ -388,7 +388,7 @@ public class Padidos extends Activity {
         List<String> lables = new ArrayList<String>();
         //lables.add(tipoPedidoList.get(0).getTipo());
         for (int i = 0; i < tipoPedidoList.size(); i++) {
-            lables.add(tipoPedidoList.get(i).getDescripcion());
+            lables.add(tipoPedidoList.get(i).getNombre());
         }
         // Creating adapter for spinner
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, lables);

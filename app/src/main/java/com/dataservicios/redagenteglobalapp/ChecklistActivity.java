@@ -36,6 +36,7 @@ import java.util.HashMap;
 
 import app.AppController;
 
+
 /**
  * Created by user on 08/02/2015.
  */
@@ -67,8 +68,9 @@ public class ChecklistActivity extends Activity {
 
     private AlertDialog.Builder builder;
 
-    //private static String url_nuevo_checklist = "http://redagentesyglobalnet.com/insertJsonCheck";
-    private static String url_nuevo_checklist = "http://192.168.0.101:8080/json_prueba.php";
+    private static String url_nuevo_checklist = "http://redagentesyglobalnet.com/insertJsonCheck";
+   // private static String url_nuevo_checklist = "http://192.168.0.101:8080/json_prueba.php";
+
     private static String url_get_contactos = "http://redagentesyglobalnet.com/JsonContactsAgent";
 
     public ChecklistActivity() {
@@ -377,7 +379,7 @@ public class ChecklistActivity extends Activity {
     private void guardarchecklist() {
         showpDialog();
 
-        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST , url_nuevo_checklist , paramsdata,
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST , url_nuevo_checklist , params,
                 new Response.Listener<JSONObject>()
                 {
                     @Override
