@@ -57,6 +57,15 @@
         </activity>
 
         <activity
+            android:name="com.dataservicios.redagenteglobalapp.ListofUsersActivity"
+            android:screenOrientation="portrait"
+            android:label="Mis Agentes"
+            android:theme="@style/AppThemeAdminPanel"
+            >
+        </activity>
+
+
+        <activity
             android:name="com.dataservicios.redagenteglobalapp.AndroidCustomGalleryActivity"
             android:screenOrientation="portrait"
             android:label="Galeria de Agente"

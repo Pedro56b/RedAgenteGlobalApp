@@ -25,7 +25,7 @@
                 android:visibility="gone"
                 android:textSize="@dimen/textoGeneral"/>
             <TextView
-                android:id="@+id/tienda"
+                android:id="@+id/idinterbank"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="6dip"
@@ -35,7 +35,7 @@
                 android:textColor="@android:color/black"
                 android:layout_toRightOf="@+id/thumbnail" />
             <TextView
-                android:id="@+id/direccion"
+                android:id="@+id/nombres"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="6dip"
@@ -43,7 +43,7 @@
                 android:textSize="@dimen/textoGeneral"
                 android:textColor="@android:color/black"
                 android:layout_toRightOf="@+id/thumbnail"
-                android:layout_below="@+id/tienda" />
+                android:layout_below="@+id/idinterbank" />
             <TextView
                 android:id="@+id/visita"
                 android:layout_width="wrap_content"
@@ -53,7 +53,7 @@
                 android:textSize="@dimen/textoGeneral"
                 android:textColor="@android:color/black"
                 android:layout_toRightOf="@+id/thumbnail"
-                android:layout_below="@+id/direccion" />
+                android:layout_below="@+id/nombres" />
 
         <ImageView
             android:id="@+id/imgStatus"

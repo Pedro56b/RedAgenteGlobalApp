@@ -9,21 +9,19 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.telephony.TelephonyManager;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.dataservicios.SQLite.DatabaseHelper;
-import com.dataservicios.librerias.GPSTracker;
 import com.dataservicios.librerias.GlobalConstant;
-import com.dataservicios.librerias.GlobalMessage;
 import com.dataservicios.librerias.JSONParser;
 import com.dataservicios.librerias.SessionManager;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -186,7 +184,7 @@ public class LoginActivity extends ActionBarActivity  implements View.OnClickLis
 
                 if (success == 1) {
                     Log.d("Login Successful!", json.toString());
-                    Intent i = new Intent(LoginActivity.this, PanelAdmin.class);
+                    Intent i;
 
                     db.deleteAllUser();
                     User users = new User();
@@ -195,7 +193,18 @@ public class LoginActivity extends ActionBarActivity  implements View.OnClickLis
                     users.setPassword(contrasena.getText().toString());
                     db.createUser(users);
                     //Enviando los datos usando Bundle a otro activity
-                    session.createLoginSession("Sin Nombre",id_user, username);
+
+                    JSONArray ObjJson = json.getJSONArray("details");
+                    JSONObject obj = ObjJson.getJSONObject(0);
+
+                    String user_type = obj.getString("position");
+                    if(user_type == "Ejecutivo Comercial"){
+                        i = new Intent(LoginActivity.this, PanelAdmin.class);
+                    }else{
+                       i = new Intent(LoginActivity.this, ListofUsersActivity.class);
+                    }
+                    session.createLoginSession(obj.getString("nombres"),id_user, username);
+
                     Bundle bolsa = new Bundle();
                     bolsa.putString("NOMBRE", username);
                     i.putExtras(bolsa);

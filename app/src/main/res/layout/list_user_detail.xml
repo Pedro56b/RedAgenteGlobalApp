@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/list_row_selector"
+    android:padding="4dp" >
+    <com.android.volley.toolbox.NetworkImageView
+        android:id="@+id/thumbnail"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp"/>
+    <!-- Name Label -->
+    <TextView
+        android:id="@+id/id"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:textSize="@dimen/textoGeneral"/>
+    <TextView
+        android:id="@+id/idinterbank"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="6dip"
+        android:paddingLeft="6dip"
+        android:textSize="@dimen/textoGeneral"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        android:layout_toRightOf="@+id/thumbnail" />
+    <TextView
+        android:id="@+id/nombres"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="6dip"
+        android:paddingLeft="6dip"
+        android:textSize="@dimen/textoGeneral"
+        android:textColor="@android:color/black"
+        android:layout_toRightOf="@+id/thumbnail"
+        android:layout_below="@+id/idinterbank" />
+
+</RelativeLayout>

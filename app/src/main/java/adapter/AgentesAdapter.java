@@ -2,13 +2,11 @@ package adapter;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
@@ -74,8 +72,8 @@ public class AgentesAdapter extends BaseAdapter {
             imageLoader = AppController.getInstance().getImageLoader();
         NetworkImageView thumbNail = (NetworkImageView) convertView.findViewById(R.id.thumbnail);
 
-        TextView tvTienda = (TextView) convertView.findViewById(R.id.tienda);
-        TextView tvDireccion = (TextView) convertView.findViewById(R.id.direccion);
+        TextView tvTienda = (TextView) convertView.findViewById(R.id.idinterbank);
+        TextView tvDireccion = (TextView) convertView.findViewById(R.id.nombres);
         TextView tvIdAgente = (TextView) convertView.findViewById(R.id.id);
         TextView tvEstatus = (TextView) convertView.findViewById(R.id.tvEstatus);
         TextView tvVisita = (TextView) convertView.findViewById(R.id.visita);
