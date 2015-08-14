@@ -53,7 +53,7 @@ public class ListofUsersActivity extends Activity {
     private UserAdapter adapter;
     private static String url_dependusers = GlobalConstant.DOMINIO + "/JsonListUsersNivel";
     private SessionManager session;
-    private String code_user, id_user, name_user;
+    private String code_user, id_user, name_user, type_user;
     private String idtienda;
     private Bundle args;
     private JSONObject params;
@@ -67,10 +67,13 @@ public class ListofUsersActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list_users);
 
         getActionBar().setTitle("Lista de Usuarios");
+        //getActionBar().setDisplayHomeAsUpEnabled(true);
 
         session = new SessionManager(this);
         // get user data from session
@@ -81,6 +84,9 @@ public class ListofUsersActivity extends Activity {
         code_user = user.get(SessionManager.KEY_USER);
         // id
         id_user = user.get(SessionManager.KEY_ID_USER);
+
+        type_user=user.get(SessionManager.KEY_TYPE_USER);
+
 
 
         listView = (ListView) findViewById(R.id.list_slidermenu);
@@ -146,14 +152,16 @@ public class ListofUsersActivity extends Activity {
                                 i = new Intent( ListofUsersActivity.this , ListofUsersActivity.class);
                             }else{
                                 i = new Intent( ListofUsersActivity.this , PanelAdmin.class);
+
                             }
                             Bundle bolsa = new Bundle();
                             bolsa.putString("user_id", uid);
                             session.logoutUser();
-                            session.createLoginSession(name_user, uid, code_user);
+                            session.createLoginSession(name_user, uid, code_user,type_user);
                             //bolsa.putString("status", status);
                             i.putExtras(bolsa);
                             startActivity(i);
+                           // finish();
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -237,5 +245,7 @@ public class ListofUsersActivity extends Activity {
         if (pDialog.isShowing())
             pDialog.dismiss();
     }
+
+
 
 }

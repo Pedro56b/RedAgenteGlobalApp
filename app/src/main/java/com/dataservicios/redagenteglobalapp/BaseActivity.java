@@ -3,6 +3,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.os.Bundle;
@@ -51,7 +52,7 @@ public class BaseActivity extends Activity {
     private ArrayList<NavDrawerItem> navDrawerItems;
     private NavDrawerListAdapter adapter;
     private SessionManager session;
-    private String code_user, id_user, name_user;
+    private String code_user, id_user, name_user, type_user;
     private JSONObject params;
     private DatabaseHelper db;
     // JSON Node names
@@ -82,6 +83,8 @@ public class BaseActivity extends Activity {
         code_user = user.get(SessionManager.KEY_USER);
         // id
         id_user = user.get(SessionManager.KEY_ID_USER);
+
+        type_user = user.get(SessionManager.KEY_TYPE_USER);
 
         db = new DatabaseHelper(MyActivity);
         params = new JSONObject();
@@ -355,6 +358,40 @@ public class BaseActivity extends Activity {
     private void hidePDialog() {
         if (pDialog.isShowing())
             pDialog.dismiss();
+    }
+
+
+
+
+
+    public void onBackPressed() {
+//        super.onBackPressed();
+//        this.finish();
+
+        //a.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        //Bundle argPDV = new Bundle();
+        //argPDV.putInt("idPDV", idPDV );
+        //argPDV.putInt("idRuta", idRuta );
+        //argPDV.putString("fechaRuta",fechaRuta);
+
+        Intent i ;
+        if(type_user.equals("Ejecutivo Comercial")){
+            i = new Intent( this, LoginActivity.class);
+            startActivity(i);
+            this.finish();
+        }else{
+            //i = new Intent( this, ListofUsersActivity.class);
+            //startActivity(i);
+            //this.finish();
+            MyActivity.finish();
+        }
+
+//        Bundle bolsa = new Bundle();
+//        bolsa.putString("NOMBRE", name_user);
+//        i.putExtras(bolsa);
+
+
+
     }
 
 }

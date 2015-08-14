@@ -71,7 +71,7 @@
                     </TableRow>
                     <TableRow
                         android:id="@+id/widget114"
-                        android:layout_width="fill_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
                         <TextView
@@ -79,10 +79,17 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Direccion:" />
-                        <TextView
-                            android:id="@+id/direccion_detail"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
+                            <TableRow
+                                android:id="@+id/widget158"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+                                    <TextView
+                                        android:id="@+id/direccion_detail"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        />
+                                </TableRow>
                     </TableRow>
 
                     <TableRow
@@ -114,7 +121,8 @@
                         <TextView
                             android:id="@+id/distrito_detail"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                           />
                     </TableRow>
                     <TableRow
                         android:id="@+id/widget117"

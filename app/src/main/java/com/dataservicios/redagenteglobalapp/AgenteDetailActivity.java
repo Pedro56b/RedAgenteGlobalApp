@@ -486,7 +486,8 @@ public class AgenteDetailActivity extends BaseAgenteActivity {
                                 // Storing each json item in variable
                                 txt_id.setText(obj.getString(TAG_ID));
                                 txt_tienda_detail.setText(obj.getString(TAG_TIENDA));
-                                txt_direccion_detail.setText(obj.getString(TAG_DIRECCION));
+                                //txt_direccion_detail.setText("Dirección: " + obj.getString(TAG_DIRECCION));
+                                txt_direccion_detail.setText("Dirección: " + obj.getString(TAG_DIRECCION));
                                 txt_ruc_detail.setText(obj.getString("ruc"));
 
                                 txt_referencia_detail.setText(obj.getString("referencia"));

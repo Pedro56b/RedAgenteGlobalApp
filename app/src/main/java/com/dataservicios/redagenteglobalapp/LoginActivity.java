@@ -1,5 +1,6 @@
 package com.dataservicios.redagenteglobalapp;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -39,6 +40,7 @@ public class LoginActivity extends ActionBarActivity  implements View.OnClickLis
     Button ubicar;
     EditText usuario,contrasena;
     String IdDevice;
+    private Activity MyActivity= this;
     // Database Helper
     private DatabaseHelper db;
 
@@ -110,6 +112,7 @@ public class LoginActivity extends ActionBarActivity  implements View.OnClickLis
                 }else {
                     new AttemptLogin().execute();
 
+
                 }
                 break;
             case R.id.btLlamar:
@@ -180,10 +183,11 @@ public class LoginActivity extends ActionBarActivity  implements View.OnClickLis
 
                 // json success, tag que retorna el json
                 success = json.getInt("success");
-                id_user = String.valueOf(json.getInt("id")) ;
+                //id_user = String.valueOf(json.getInt("id")) ;
 
                 if (success == 1) {
                     Log.d("Login Successful!", json.toString());
+                    id_user = String.valueOf(json.getInt("id")) ;
                     Intent i;
 
                     db.deleteAllUser();
@@ -198,21 +202,26 @@ public class LoginActivity extends ActionBarActivity  implements View.OnClickLis
                     JSONObject obj = ObjJson.getJSONObject(0);
 
                     String user_type = obj.getString("position");
-                    if(user_type == "Ejecutivo Comercial"){
+                    if(user_type.equals("Ejecutivo Comercial")){
                         i = new Intent(LoginActivity.this, PanelAdmin.class);
                     }else{
-                       i = new Intent(LoginActivity.this, ListofUsersActivity.class);
+                        i = new Intent(LoginActivity.this, ListofUsersActivity.class);
                     }
-                    session.createLoginSession(obj.getString("nombres"),id_user, username);
+                    session.createLoginSession(obj.getString("nombres"), id_user, username, user_type);
 
                     Bundle bolsa = new Bundle();
                     bolsa.putString("NOMBRE", username);
                     i.putExtras(bolsa);
-                    finish();
+
                     startActivity(i);
+                    MyActivity.finish();
                     return json.getString("message");
                 }else{
                     Log.d("Login Failure!", json.getString("message"));
+
+//                    Toast toast = Toast.makeText(MyActivity , "Ingrese un Usuario ", Toast.LENGTH_SHORT );
+//                    toast.show();
+                    //usuario.requestFocus();
                     return json.getString("message");
 
                 }
@@ -226,11 +235,11 @@ public class LoginActivity extends ActionBarActivity  implements View.OnClickLis
         /**
          * After completing background task Dismiss the progress dialog
          * **/
-        protected void onPostExecute(String file_url) {
+        protected void onPostExecute(String mensaje) {
             // dismiss the dialog once product deleted
             pDialog.dismiss();
-            if (file_url != null){
-                Toast.makeText(LoginActivity.this, file_url, Toast.LENGTH_LONG).show();
+            if (mensaje != null){
+                Toast.makeText(LoginActivity.this, mensaje + " Compruebe su usuario o la contraseña ", Toast.LENGTH_LONG).show();
             }
 
         }
