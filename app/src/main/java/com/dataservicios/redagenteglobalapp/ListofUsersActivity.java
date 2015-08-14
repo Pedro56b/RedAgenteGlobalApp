@@ -103,7 +103,7 @@ public class ListofUsersActivity extends Activity {
         NetworkImageView thumbNail = (NetworkImageView) findViewById(R.id.thumbnail);
 
         // thumbnail image
-        thumbNail.setImageUrl("redagentesyglobalnet.com/images/users/"+code_user+".jpg", imageLoader);
+        thumbNail.setImageUrl("http://redagentesyglobalnet.com/images/users/"+code_user+".jpg", imageLoader);
         thumbNail.setErrorImageResId(R.drawable.ic_user);
 
         Log.d("code_user",code_user);
@@ -148,6 +148,9 @@ public class ListofUsersActivity extends Activity {
                             JSONObject json = jsonParser.makeHttpRequest(url_dependusers ,"POST", params);
                             Integer success = json.getInt("success");
 
+                            Log.d("USER-ID",success+"");
+                            Log.d("USER-ID",""+(success == 1));
+
                             if (success == 1 ){
                                 i = new Intent( ListofUsersActivity.this , ListofUsersActivity.class);
                             }else{
@@ -156,12 +159,12 @@ public class ListofUsersActivity extends Activity {
                             }
                             Bundle bolsa = new Bundle();
                             bolsa.putString("user_id", uid);
-                            session.logoutUser();
+                            //session.logoutUser();
                             session.createLoginSession(name_user, uid, code_user,type_user);
                             //bolsa.putString("status", status);
+                            bolsa.putString("NOMBRE", code_user);
                             i.putExtras(bolsa);
                             startActivity(i);
-                           // finish();
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -203,7 +206,7 @@ public class ListofUsersActivity extends Activity {
                                     user.setId(Integer.parseInt(obj.getString("iduser")));
                                     user.setNombre(obj.getString("nombres"));
                                     user.setIdInterbank(obj.getString("idInterbank"));
-                                    user.setThumbnailUrl("redagentesyglobalnet.com/images/users/"+obj.getString("idInterbank")+".jpg");
+                                    user.setThumbnailUrl("http://redagentesyglobalnet.com/images/users/"+obj.getString("photo"));
                                     usersList.add(user);
                                 }
                                 adapter.notifyDataSetChanged();

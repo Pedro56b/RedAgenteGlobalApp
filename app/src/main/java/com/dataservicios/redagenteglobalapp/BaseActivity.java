@@ -89,7 +89,6 @@ public class BaseActivity extends Activity {
         db = new DatabaseHelper(MyActivity);
         params = new JSONObject();
 
-
             try {
                 params.put("id", id_user);
 
@@ -106,6 +105,7 @@ public class BaseActivity extends Activity {
         mDrawerList = (ListView) findViewById(R.id.list_slidermenu);
         navDrawerItems = new ArrayList<NavDrawerItem>();
         // adding nav drawer items to array
+        navDrawerItems.add(new NavDrawerItem( code_user , R.drawable.ic_user ));
         // Home
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1)));
         // Sincronia de Agentes
@@ -151,7 +151,7 @@ public class BaseActivity extends Activity {
 
         if (savedInstanceState == null) {
             // on first time display view for first nav item
-            displayView(0);
+            displayView(1);
         }
     }
 

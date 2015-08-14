@@ -63,7 +63,7 @@ public class BaseAgenteActivity extends Activity
     private SessionManager session;
     private DatabaseHelper db;
 
-    private String code_user, user_id, name_user;
+    private String code_user, user_id, name_user, id_user;
     private Integer status;
 
 
@@ -76,6 +76,14 @@ public class BaseAgenteActivity extends Activity
         //status = Integer.valueOf(bundle.getString("status")) ;
 
         session = new SessionManager(getApplicationContext());
+        // get user data from session
+        HashMap<String, String> user = session.getUserDetails();
+        // name
+        name_user = user.get(SessionManager.KEY_NAME);
+        // email
+        code_user = user.get(SessionManager.KEY_USER);
+        // id
+        id_user = user.get(SessionManager.KEY_ID_USER);
         mTitle = mDrawerTitle = getTitle();
         // load slide menu items
         navMenuTitles = getResources().getStringArray(R.array.nav_drawer_agentes_items);
@@ -86,6 +94,8 @@ public class BaseAgenteActivity extends Activity
         navDrawerItems = new ArrayList<NavDrawerItem>();
 
         // adding nav drawer items to array
+        navDrawerItems.add(new NavDrawerItem( code_user  , R.drawable.ic_user ));
+
         // Lista de agentes
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1)));
 
@@ -209,12 +219,15 @@ public class BaseAgenteActivity extends Activity
 
         switch (position) {
             case 0:
+
+                break;
+            case 1:
                 // Starting new intent
 
                 finish();
 
                 break;
-            case 1:
+            case 2:
                 // Starting new intent
                 Intent i = new Intent( this , EditAgenteActivity.class);
                 Bundle bolsa = new Bundle();
@@ -223,7 +236,7 @@ public class BaseAgenteActivity extends Activity
                 startActivity(i);
 
                 break;
-            case 2:
+            case 3:
                 // Starting new intent
                 Intent i_1 = new Intent( this , ChecklistActivity.class);
                 Bundle bolsa_1 = new Bundle();
@@ -231,14 +244,14 @@ public class BaseAgenteActivity extends Activity
                 i_1.putExtras(bolsa_1);
                 startActivity(i_1);
                 break;
-            case 3:// Starting new intent
+            case 4:// Starting new intent
                 Intent i_2 = new Intent( this , ListofReclamosActivity.class);
                 Bundle bolsa_2 = new Bundle();
                 bolsa_2.putString("id", aid);
                 i_2.putExtras(bolsa_2);
                 startActivity(i_2);
                 break;
-            case 4:
+            case 5:
                 //fragment = new CommunityFragment();
                 Intent i_3 = new Intent( this , ListaPedido.class);
                 Bundle bolsa_3 = new Bundle();
@@ -246,7 +259,7 @@ public class BaseAgenteActivity extends Activity
                 i_3.putExtras(bolsa_3);
                 startActivity(i_3);
                 break;
-            case 5:
+            case 6:
                 // Intent i_4 = new Intent( this , TransaccionesAgenteActivity.class);
                 Intent i_4 = new Intent( this , Transacciones.class);
                 Bundle bolsa_4 = new Bundle();
@@ -254,7 +267,7 @@ public class BaseAgenteActivity extends Activity
                 i_4.putExtras(bolsa_4);
                 startActivity(i_4);
                 break;
-            case 6:
+            case 7:
                 // Intent i_4 = new Intent( this , TransaccionesAgenteActivity.class);
                 Intent i_5 = new Intent( this , Facturacion.class);
                 Bundle bolsa_5 = new Bundle();
@@ -262,7 +275,7 @@ public class BaseAgenteActivity extends Activity
                 i_5.putExtras(bolsa_5);
                 startActivity(i_5);
                 break;
-            case 7:
+            case 8:
                 // Intent i_4 = new Intent( this , TransaccionesAgenteActivity.class);
                 Intent i_6 = new Intent( this , Deuda.class);
                 Bundle bolsa_6 = new Bundle();
@@ -270,14 +283,14 @@ public class BaseAgenteActivity extends Activity
                 i_6.putExtras(bolsa_6);
                 startActivity(i_6);
                 break;
-            case 8:
+            case 9:
                 Intent i_7 = new Intent( this , AndroidCustomGalleryActivity.class);
                 Bundle bolsa_7 = new Bundle();
                 bolsa_7.putString("id", aid);
                 i_7.putExtras(bolsa_7);
                 startActivity(i_7);
                 break;
-            case 9:
+            case 10:
 // get user data from session
                 HashMap<String, String> user = session.getUserDetails();
                 // name
